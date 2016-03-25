@@ -20,7 +20,9 @@ import {AlertingService} from '../alerting/AlertingService';
 import {ImagesService} from '../../shared/services/ImagesService';
 import {UserSettings} from '../../shared/models/UserSettings';
 
-describe('UserSettingsComponent', function() {
+describe('UserSettingsComponentTests', function() {
+  var instance: UserSettingsComponent = null;
+
   class ImagesServiceMock {
     getPointerImages() {
       var pointerImages = '["./app/assets/images/pointer/small.png", "./app/assets/images/pointer/big.png"]';
@@ -28,15 +30,6 @@ describe('UserSettingsComponent', function() {
       return Observable.of(obj);
     }
   }
-
-  function getTestPointerColors(): PointerColor[] {
-    return [
-      PointerColor.White,
-      PointerColor.Yellow
-    ];
-  }
-
-  var instance: UserSettingsComponent = null;
 
   beforeEachProviders(() => [
     provide(AlertingService, { useClass: AlertingService }),
@@ -59,7 +52,26 @@ describe('UserSettingsComponent', function() {
       expect(instance.allImages).toEqual(allPointerImagesLocal);
     }));
 
-  it('UserSettingsComponent_selectBackgroundColor_shouldSetBgColorAndRestorePointerDefaults', injectAsync([TestComponentBuilder], (tcb) => {
+  it('UserSettingsComponent_setBackgroundColorAndPointerColors_shouldSetBgColorAndLoadPointerColors', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.overrideTemplate(UserSettingsComponent, '').createAsync(UserSettingsComponent).then((fixture) => {
+      // Arrange
+      var bgColor: BackgroundColor = BackgroundColor.BlackAndWhite;
+      instance = fixture.componentInstance;
+      instance.userSettings = new UserSettings();
+      instance.userSettings.backgroundColor = BackgroundColor.InColor;
+      fixture.detectChanges();
+      spyOn(fixture.componentInstance.pointerColorService, 'getPointerColors').and.callFake(() => { });
+
+      // Act
+      instance.setBackgroundColorAndPointerColors(bgColor);
+
+      // Assert
+      expect(instance.userSettings.backgroundColor).toEqual(bgColor);
+      expect(fixture.componentInstance.pointerColorService.getPointerColors).toHaveBeenCalledWith(bgColor);
+    });
+  }));
+
+  it('UserSettingsComponent_selectBackgroundColor_shouldCallSetBackgroundMethodAndSetPointerDefaults', injectAsync([TestComponentBuilder], (tcb) => {
     return tcb.overrideTemplate(UserSettingsComponent, '').createAsync(UserSettingsComponent).then((fixture) => {
       // Arrange
       var nonDefaultPointerColor: PointerColor = PointerColor.Blue;
@@ -70,16 +82,15 @@ describe('UserSettingsComponent', function() {
       instance.userSettings.backgroundColor = BackgroundColor.InColor;
       instance.userSettings.pointerColor = nonDefaultPointerColor;
       fixture.detectChanges();
-      spyOn(fixture.componentInstance.pointerColorService, 'getPointerColors').and.callFake(getTestPointerColors);
+      spyOn(instance, 'setBackgroundColorAndPointerColors').and.callThrough();
+      spyOn(instance, 'selectPointerColor').and.callThrough();
 
       // Act
       instance.selectBackgroundColor(bgColor);
 
       // Assert
-      expect(fixture.componentInstance.pointerColorService.getPointerColors).toHaveBeenCalledWith(bgColor);
-      expect(instance.userSettings.backgroundColor).toEqual(bgColor);
-      expect(instance.userSettings.pointerColor).toEqual(defaultPointerColor);
-      expect(instance.availablePointerColors).toEqual(getTestPointerColors());
+      expect(instance.setBackgroundColorAndPointerColors).toHaveBeenCalledWith(bgColor);
+      expect(instance.selectPointerColor).toHaveBeenCalledWith(defaultPointerColor);
     });
   }));
 
@@ -116,6 +127,23 @@ describe('UserSettingsComponent', function() {
 
       // Assert
       expect(instance.userSettings.pointerSize).toEqual(newPointerSize);
+    });
+  }));
+
+  it('UserSettingsComponent_shouldBeChecked_shouldReturnTrue', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.overrideTemplate(UserSettingsComponent, '').createAsync(UserSettingsComponent).then((fixture) => {
+      // Arrange
+      var selectedBgColor: BackgroundColor = BackgroundColor.InColor;
+      instance = fixture.componentInstance;
+      instance.userSettings = new UserSettings();
+      instance.userSettings.backgroundColor = selectedBgColor;
+      fixture.detectChanges();
+
+      // Act
+      var checked = instance.shouldBeChecked(selectedBgColor);
+
+      // Assert
+      expect(checked).toBeTruthy();
     });
   }));
 

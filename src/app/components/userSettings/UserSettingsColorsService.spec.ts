@@ -24,4 +24,4 @@ describe('UserSettingsColorsService', function() {
     // Assert
     expect(inColorAvailablePointerColor.length).toEqual(5);
   });
-})
+});

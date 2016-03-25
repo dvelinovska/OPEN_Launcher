@@ -96,12 +96,12 @@ describe('RegistrationCompnent', function() {
     //act
     instance.onSelect('eljesa');
     //assert
-    expect(instance.vm.profileImg).toBe('eljesa');
+    expect(instance.user.profileImg).toBe('eljesa');
   });
 
   it('RegisterComponent_onSelect_shouldBeDefaultPath', function() {
     //assert
-    expect(instance.vm.profileImg).toBe('./assets/images/avatars/default.jpg');
+    expect(instance.user.profileImg).toBe('./assets/images/avatars/default.jpg');
   });
 
   it('RegisterComponent_adduser_shouldAddUserAndReturnUsersAndEmptyMessage', function() {
@@ -130,7 +130,7 @@ describe('RegistrationCompnent', function() {
     user.name = 'eljesa';
     user.profileImg = 'PATH';
 
-    instance.vm = user;
+    instance.user = user;
     instance.onSubmit();
 
     //Assert
@@ -164,7 +164,7 @@ describe('RegistrationCompnent', function() {
     user.name = 'eljesa';
     user.profileImg = 'PATH';
 
-    instance.vm = user;
+    instance.user = user;
     instance.onSubmit();
 
     //Assert
@@ -178,7 +178,7 @@ describe('RegistrationCompnent', function() {
     user.name = 'eljesa';
     user.profileImg = './assets/images/avatars/default.jpg';
 
-    instance.vm = user;
+    instance.user = user;
     instance.onSubmit();
 
     //Assert

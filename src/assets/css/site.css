@@ -35,6 +35,10 @@ a.link{
   margin-top:20px;
 }
 
+.left-buffer{
+  margin-left:20px;
+}
+
 .fileUpload {
     position: relative;
     overflow: hidden;
