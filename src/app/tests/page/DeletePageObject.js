@@ -16,7 +16,7 @@ var DeleteUser = function() {
     deleteBtn.click();
     browser.wait(EC.visibilityOf(modal), 5000);
     YesBtn.click();
-    browser.wait(EC.visibilityOf(someProfile), 5000);
+
   };
 
   this.DeleteFilteredUser = function() {
@@ -35,6 +35,7 @@ var DeleteUser = function() {
     deleteBtn.click();
     browser.wait(EC.visibilityOf(modal), 5000);
     NoBtn.click();
+
   };
 
   this.IsDeleteBtnIsVisible = function() {

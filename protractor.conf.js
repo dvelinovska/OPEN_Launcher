@@ -16,7 +16,7 @@ exports.config = {
 
   exclude: [],
 
-  framework: 'jasmine2',
+  framework: 'jasmine',
 
   jasmineNodeOpts: {
     showTiming: true,

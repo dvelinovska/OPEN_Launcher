@@ -77,7 +77,7 @@ var LogInPage = function() {
 
   this.GetTitle = function() {
     return browser.getTitle();
-  }
+  };
 
 
 

@@ -14,42 +14,18 @@ import {Observable} from 'rxjs/Rx';
 
 import {UserSettingsComponent} from './UserSettingsComponent';
 import {UserSettingsColorsService} from './UserSettingsColorsService';
-import {PointerColor, BackgroundColor} from '../../shared/enums/UserSettingsEnums';
+import {PointerColor, PointerSize, BackgroundColor} from '../../shared/enums/UserSettingsEnums';
 import {Alert} from '../alerting/Alert';
 import {AlertingService} from '../alerting/AlertingService';
 import {ImagesService} from '../../shared/services/ImagesService';
 import {UserSettings} from '../../shared/models/UserSettings';
 
 describe('UserSettingsComponent', function() {
-  class AlertingServiceMock {
-    currentAlerts: Array<Alert> = new Array<Alert>();
-
-    addAlert(type: string, message: string) {
-      var alert = new Alert(type, message);
-      this.currentAlerts.push(alert);
-    }
-
-    removeAlert(alert: Alert) {
-      for (var index = 0; index < this.currentAlerts.length; index++) {
-        if (this.currentAlerts[index] === alert) {
-          this.currentAlerts.splice(index, 1);
-          break;
-        }
-      }
-    }
-  }
-
   class ImagesServiceMock {
     getPointerImages() {
       var pointerImages = '["./app/assets/images/pointer/small.png", "./app/assets/images/pointer/big.png"]';
       var obj = JSON.parse(pointerImages);
       return Observable.of(obj);
-    }
-  }
-
-  class UserSettingsColorsServiceMock {
-    getPointerColors(backgroundColor: BackgroundColor): PointerColor[] {
-      return getTestPointerColors();
     }
   }
 
@@ -60,80 +36,121 @@ describe('UserSettingsComponent', function() {
     ];
   }
 
-  var injector: Injector;
   var instance: UserSettingsComponent = null;
-  var _alertingService: AlertingService;
-  var _pointerColorService: UserSettingsColorsService;
-  var _imagesService: ImagesService;
 
-  beforeEach(() => {
-    injector = Injector.resolveAndCreate([
-      provide(AlertingService, { useClass: AlertingServiceMock }),
-      provide(UserSettingsColorsService, { useClass: UserSettingsColorsService }),
-      provide(ImagesService, { useClass: ImagesServiceMock })
-    ]);
+  beforeEachProviders(() => [
+    provide(AlertingService, { useClass: AlertingService }),
+    provide(UserSettingsColorsService, { useClass: UserSettingsColorsService }),
+    provide(ImagesService, { useClass: ImagesServiceMock }),
+    UserSettingsComponent
+  ]);
 
-    _alertingService = injector.get(AlertingService);
-    _pointerColorService = injector.get(UserSettingsColorsService);
-    _imagesService = injector.get(ImagesService);
+  it('UserSettingsComponent_getAvailableImages_shouldSetAllPointerImages',
+    inject([UserSettingsComponent], (instance) => {
+      // Arrange
+      var allPointerImagesLocal: string[] = new Array<string>();
+      allPointerImagesLocal = ['./app/assets/images/pointer/small.png', './app/assets/images/pointer/big.png'];
+      spyOn(instance.imagesService, 'getPointerImages').and.callThrough();
 
-    instance = new UserSettingsComponent(_alertingService, _pointerColorService, _imagesService);
-  });
+      // Act
+      instance.getAvailableImages();
 
-  it('UserSettingsComponent_getAvailableImages_shouldSetAllPointerImages', () => {
-    // Arrange
-    var allPointerImagesLocal: string[] = new Array<string>();
-    allPointerImagesLocal = ['./app/assets/images/pointer/small.png', './app/assets/images/pointer/big.png'];
+      // Assert
+      expect(instance.allImages).toEqual(allPointerImagesLocal);
+    }));
 
-    // Act
-    instance.getAvailableImages();
+  it('UserSettingsComponent_selectBackgroundColor_shouldSetBgColorAndRestorePointerDefaults', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.overrideTemplate(UserSettingsComponent, '').createAsync(UserSettingsComponent).then((fixture) => {
+      // Arrange
+      var nonDefaultPointerColor: PointerColor = PointerColor.Blue;
+      var defaultPointerColor: PointerColor = PointerColor.White;
+      var bgColor: BackgroundColor = BackgroundColor.BlackAndWhite;
+      instance = fixture.componentInstance;
+      instance.userSettings = new UserSettings();
+      instance.userSettings.backgroundColor = BackgroundColor.InColor;
+      instance.userSettings.pointerColor = nonDefaultPointerColor;
+      fixture.detectChanges();
+      spyOn(fixture.componentInstance.pointerColorService, 'getPointerColors').and.callFake(getTestPointerColors);
 
-    // Assert
-    expect(instance.allImages).toEqual(allPointerImagesLocal);
-  });
+      // Act
+      instance.selectBackgroundColor(bgColor);
 
-  // it('UserSettingsComponent_selectBackgroundColor_shouldSetChoosenBackgroundAndDefaultPointerOptions', () => {
-  //   // Arrange
-  //   var bgColor: BackgroundColor = BackgroundColor.BlackAndWhite;
-  //   var defaultPointerColor: PointerColor = PointerColor.White;
-  //   instance.ngOnInit();
+      // Assert
+      expect(fixture.componentInstance.pointerColorService.getPointerColors).toHaveBeenCalledWith(bgColor);
+      expect(instance.userSettings.backgroundColor).toEqual(bgColor);
+      expect(instance.userSettings.pointerColor).toEqual(defaultPointerColor);
+      expect(instance.availablePointerColors).toEqual(getTestPointerColors());
+    });
+  }));
 
-  //   // Act
-  //   instance.selectBackgroundColor(bgColor);
+  it('UserSettingsComponent_selectPointerColor_shouldSetPointerColor', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.overrideTemplate(UserSettingsComponent, '').createAsync(UserSettingsComponent).then((fixture) => {
+      // Arrange
+      var defaultPointerColor: PointerColor = PointerColor.White;
+      var newPointerColor: PointerColor = PointerColor.Blue;
+      instance = fixture.componentInstance;
+      instance.userSettings = new UserSettings();
+      instance.userSettings.pointerColor = defaultPointerColor;
+      fixture.detectChanges();
 
-  //   spyOn(_pointerColorService, 'getPointerColors').and.callThrough();
+      // Act
+      instance.selectPointerColor(newPointerColor);
 
-  //   // Assert
-  //   expect(instance.userSettings.backgroundColor).toEqual(bgColor);
-  //   expect(instance.userSettings.pointerColor).toEqual(defaultPointerColor);
-  //   // expect(instance.availablePointerColors).toEqual(getTestPointerColors());
-  // });
+      // Assert
+      expect(instance.userSettings.pointerColor).toEqual(newPointerColor);
+    });
+  }));
 
-  // beforeEachProviders(() => [
-  //   provide(AlertingService, { useClass: AlertingServiceMock }),
-  //   provide(UserSettingsColorsService, { useClass: UserSettingsColorsService }),
-  //   provide(ImagesService, { useClass: ImagesServiceMock })
-  // ]);
+  it('UserSettingsComponent_selectPointerSize_shouldSetPointerSize', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.overrideTemplate(UserSettingsComponent, '').createAsync(UserSettingsComponent).then((fixture) => {
+      // Arrange
+      var defaultPointerSize: PointerSize = PointerSize.Small;
+      var newPointerSize: PointerSize = PointerSize.Medium;
+      instance = fixture.componentInstance;
+      instance.userSettings = new UserSettings();
+      instance.userSettings.pointerSize = defaultPointerSize;
+      fixture.detectChanges();
 
-  // it('test component builder', injectAsync([TestComponentBuilder], (tcb) => {
-  //   return tcb.overrideTemplate(UserSettingsComponent, '<div></div>').createAsync(UserSettingsComponent).then((fixture) => {
-  //     fixture.componentInstance.userSettings = new UserSettings();
-  //     fixture.componentInstance.userSettings.backgroundColor = BackgroundColor.InColor;
-  //     fixture.componentInstance.userSettings.pointerColor = PointerColor.Blue;
-  //     fixture.detectChanges();
+      // Act
+      instance.selectPointerSize(newPointerSize);
 
-  //     var bgColor: BackgroundColor = BackgroundColor.BlackAndWhite;
-  //     var defaultPointerColor: PointerColor = PointerColor.White;
+      // Assert
+      expect(instance.userSettings.pointerSize).toEqual(newPointerSize);
+    });
+  }));
 
-  //     // Act
-  //     instance.selectBackgroundColor(bgColor);
+  it('UserSettingsComponent_shouldApplySelectedPointerColorCss_shouldReturnTrue', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.overrideTemplate(UserSettingsComponent, '').createAsync(UserSettingsComponent).then((fixture) => {
+      // Arrange
+      var selectedPointerColor: PointerColor = PointerColor.White;
+      instance = fixture.componentInstance;
+      instance.userSettings = new UserSettings();
+      instance.userSettings.pointerColor = selectedPointerColor;
+      fixture.detectChanges();
 
-  //     spyOn(_pointerColorService, 'getPointerColors').and.callThrough();
+      // Act
+      var shouldApplyCss = instance.shouldApplySelectedPointerColorCss(selectedPointerColor);
 
-  //     // Assert
-  //     expect(instance.userSettings.backgroundColor).toEqual(bgColor);
-  //     expect(instance.userSettings.pointerColor).toEqual(defaultPointerColor);
-  //     // expect(instance.availablePointerColors).toEqual(getTestPointerColors());
-  //   });
-  // }));
+      // Assert
+      expect(shouldApplyCss).toBeTruthy();
+    });
+  }));
+
+  it('UserSettingsComponent_shouldApplySelectedPointerSizeCss_shouldReturnFalse', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.overrideTemplate(UserSettingsComponent, '').createAsync(UserSettingsComponent).then((fixture) => {
+      // Arrange
+      var selectedPointerSize: PointerSize = PointerSize.Small;
+      var otherPointerSize: PointerSize = PointerSize.Medium;
+      instance = fixture.componentInstance;
+      instance.userSettings = new UserSettings();
+      instance.userSettings.pointerSize = selectedPointerSize;
+      fixture.detectChanges();
+
+      // Act
+      var shouldApplyCss = instance.shouldApplySelectedPointerSizeCss(otherPointerSize);
+
+      // Assert
+      expect(shouldApplyCss).toBeFalsy();
+    });
+  }));
 });
