@@ -14,6 +14,7 @@ import {UploadPictureComponent} from './app/components/upload/UploadPictureCompo
 import {RegisterComponent} from './app/components/registration/RegisterComponent';
 import {LoginComponent} from './app/components/login/LoginComponent';
 import {AlertingComponent} from './app/components/alerting/AlertingComponent';
+import {UserSettingsEditComponent} from './app/components/userSettingsEdit/UserSettingsEditComponent';
 
 /*
  * Injectables
@@ -38,6 +39,7 @@ import { AUTH_PROVIDERS } from './app/shared/services/AuthService';
   { path: '/uploadpicture', component: UploadPictureComponent, name: 'UploadPicture' },
   { path: '/register', component: RegisterComponent, name: 'Register' },
   { path: '/login', component: LoginComponent, name: 'Login' },
+  { path: '/userSettingsEdit', component: UserSettingsEditComponent, name: 'UserSettingsEdit' },
 ])
 export class App { }
 

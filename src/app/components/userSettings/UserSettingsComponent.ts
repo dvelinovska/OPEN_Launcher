@@ -16,13 +16,20 @@ export class UserSettingsComponent {
   public allImages: string[] = new Array<string>();
 
   @Input() userSettings: UserSettings;
-  ngOnInit() {
-    this.userSettings.backgroundColor = BackgroundColor.InColor;
-    this.userSettings.pointerType = PointerType.Hand;
-    this.userSettings.pointerSize = PointerSize.Small;
-    this.userSettings.pointerColor = PointerColor.White;
+  ngOnChanges(changes) {
+    var changedUserSettings = changes.userSettings.currentValue;
+    if (changedUserSettings) {
+      // if (this.userSettings.backgroundColor === undefined) {
+      //   this.userSettings.backgroundColor = BackgroundColor.InColor;
+      //   this.userSettings.pointerType = PointerType.Hand;
+      //   this.userSettings.pointerSize = PointerSize.Small;
+      //   this.userSettings.pointerColor = PointerColor.White;
+      // }
 
-    this.selectBackgroundColor(this.userSettings.backgroundColor);
+      this.selectInitaialBackgroundColor(this.userSettings.backgroundColor);
+      this.selectPointerSize(this.userSettings.pointerSize);
+      this.selectPointerColor(this.userSettings.pointerColor);
+    }
   }
 
   constructor(
@@ -45,6 +52,11 @@ export class UserSettingsComponent {
     this.availablePointerColors = this.pointerColorService.getPointerColors(backgroundColor);
   }
 
+  selectInitaialBackgroundColor(backgroundColor: BackgroundColor) {
+    this.userSettings.backgroundColor = backgroundColor;
+    this.availablePointerColors = this.pointerColorService.getPointerColors(backgroundColor);
+  }
+
   selectPointerColor(pointerColor: PointerColor) {
     this.userSettings.pointerColor = pointerColor;
   }
@@ -53,11 +65,13 @@ export class UserSettingsComponent {
     this.userSettings.pointerSize = pointerSize;
   }
 
-  shouldApplySelectedColorCss(pointerColor: PointerColor): boolean {
+  shouldApplySelectedPointerColorCss(pointerColor: PointerColor): boolean {
+   // return false;
     return this.userSettings.pointerColor === pointerColor;
   }
 
   shouldApplySelectedPointerSizeCss(pointerSize: PointerSize): boolean {
+  // return false;
     return this.userSettings.pointerSize === pointerSize;
   }
 }

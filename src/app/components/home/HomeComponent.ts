@@ -2,9 +2,12 @@ import {Component} from 'angular2/core';
 import {UserService} from '../../shared/services/UserService';
 import {AuthService} from '../../shared/services/AuthService';
 import {AlertingService} from '../alerting/AlertingService';
+import {RouterLink, Router} from 'angular2/router';
 import {User} from '../../shared/models/User';
+import {UserSettingsEditComponent} from '../userSettingsEdit/UserSettingsEditComponent';
 
 @Component({
+  directives: [RouterLink,UserSettingsEditComponent],
   selector: 'home',
   templateUrl: `./app/components/home/home.html`
 })

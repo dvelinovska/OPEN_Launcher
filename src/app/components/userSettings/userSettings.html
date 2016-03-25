@@ -3,13 +3,16 @@
   <div class="col-sm-10">
     <div class="radio">
       <label class="h4">
-        <input #inColor name="bgColorOption" type="radio" value="0" checked="checked" (click)="selectBackgroundColor(inColor.value)"
+        <input #inColor name="bgColorOption" type="radio" value="0"  (click)="selectBackgroundColor(inColor.value)"
         />Во боја
+        <!--[checked]="inColor.value == userSettings.backgroundColor"-->
       </label>
     </div>
     <div class="radio">
       <label class="h4">
-        <input #blackWhite name="bgColorOption" type="radio" value="1" (click)="selectBackgroundColor(blackWhite.value)" />Црно-бела
+        <input #blackWhite name="bgColorOption" type="radio" value="1"
+        (click)="selectBackgroundColor(blackWhite.value)" />Црно-бела
+        <!--[checked]="blackWhite.value == userSettings.backgroundColor"-->
       </label>
     </div>
   </div>
@@ -31,7 +34,7 @@
   <!--<h4>Боја</h4>-->
   <div class="col-sm-10 col-sm-offset-2">
     <div *ngFor="#color of availablePointerColors" class="col-sm-4 col-md-3 col-lg-2 top-buffer">
-      <div id="pointer-color-{{color}}" class="pointer-color-{{color}} color-box img-circle" [class.selected]="shouldApplySelectedColorCss(color)"
+      <div id="pointer-color-{{color}}" class="pointer-color-{{color}} color-box img-circle" [class.selected]="shouldApplySelectedPointerColorCss(color)"
       (click)="selectPointerColor(color)"></div>
     </div>
   </div>
