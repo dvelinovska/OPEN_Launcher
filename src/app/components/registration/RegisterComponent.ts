@@ -20,7 +20,7 @@ import {PointerType, PointerSize, PointerColor, BackgroundColor} from '../../sha
   templateUrl: './app/components/registration/register.html'
 })
 export class RegisterComponent {
-  public user: User = new User();
+  public user: User;
   public registerForm: ControlGroup;
   public allImages: string[] = new Array<string>();
 
@@ -39,16 +39,6 @@ export class RegisterComponent {
     });
 
     this.getAvailableImages();
-  }
-
-  getInitialUser(): User {
-    var user: User = new User();
-    user.profileImg = './assets/images/avatars/default.jpg';
-    user.userSettings.pointerType = PointerType.Hand;
-    user.userSettings.backgroundColor = BackgroundColor.InColor;
-    user.userSettings.pointerColor = PointerColor.White;
-    user.userSettings.pointerSize = PointerSize.Small;
-    return user;
   }
 
   getAvailableImages() {
