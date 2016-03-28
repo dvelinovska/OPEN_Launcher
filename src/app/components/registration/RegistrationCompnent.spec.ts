@@ -24,7 +24,7 @@ import {Alert} from '../alerting/Alert';
 describe('RegisterComponent', function() {
   var instance: RegisterComponent = null;
 
-  function setUsers(user: User): User {
+  function setUser(user: User): User {
     user.name = 'eljesa';
     user.profileImg = 'PATH';
     return user;
@@ -115,7 +115,7 @@ describe('RegisterComponent', function() {
 
       //Act
       let user: User = new User();
-      instance.user = setUsers(user);
+      instance.user = setUser(user);
       instance.onSubmit();
 
       //Assert
@@ -134,7 +134,7 @@ describe('RegisterComponent', function() {
 
       //Act
       let user: User = new User();
-      instance.user = setUsers(user);
+      instance.user = setUser(user);
       instance.onSubmit();
 
       //Assert
