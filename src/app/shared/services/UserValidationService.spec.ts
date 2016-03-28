@@ -7,14 +7,12 @@ describe('UserValidationService', function() {
 
   function getValidUser() {
     var result = new User();
-
     result.name = 'testName';
     result.profileImg = 'someProfileImage';
     result.userSettings.backgroundColor = BackgroundColor.InColor;
     result.userSettings.pointerColor = PointerColor.White;
     result.userSettings.pointerSize = PointerSize.Small;
     result.userSettings.pointerType = PointerType.Hand;
-
     return result;
   }
 
@@ -79,6 +77,5 @@ describe('UserValidationService', function() {
     // Assert
     expect('').toEqual(result);
   });
-
 });
 

@@ -24,8 +24,8 @@ import {Alert} from '../alerting/Alert';
 describe('RegistrationCompnent', function() {
   class ImagesServiceMock {
     getProfileImages() {
-      var string1 = '["./app/assets/images/avatars/default.jpg", "./app/assets/images/avatars/devojce.png"]';
-      var obj = JSON.parse(string1);
+      var images = '["./app/assets/images/avatars/default.jpg", "./app/assets/images/avatars/devojce.png"]';
+      var obj = JSON.parse(images);
       return Observable.of(obj);
     }
   }
@@ -35,19 +35,12 @@ describe('RegistrationCompnent', function() {
   }
 
   class AlertingServiceMock {
-    addDanger(message: string) {
-
-    }
-
-    addSuccess(message: string) {
-
-    }
+    addDanger(message: string) { }
+    addSuccess(message: string) { }
   }
 
   class RouterMock {
-    navigate(urlList: Array<String>) {
-
-    }
+    navigate(urlList: Array<String>) { }
   }
 
   var injector: Injector;
