@@ -67,6 +67,7 @@ describe('LoginComponent', function() {
     }
     login() { }
   }
+
   class RouterMock {
     navigate() { }
   }
@@ -79,7 +80,6 @@ describe('LoginComponent', function() {
   var _router: Router;
 
   beforeEach(() => {
-
     injector = Injector.resolveAndCreate([
       provide(AuthService, { useClass: AuthServiceMock }),
       provide(UserService, { useClass: UserServiceMock }),
@@ -93,17 +93,16 @@ describe('LoginComponent', function() {
     _router = injector.get(Router);
 
     instance = new LoginComponent(_alertingService, _userService, _authService, _router);
-
   });
 
   it('Login_GivenInavlidUser_UnsuccessfulLogin', function() {
     //Arrange
     var user = getTestUser('user');
-
-    //Act
     spyOn(_alertingService, 'addDanger').and.callThrough();
     spyOn(_authService, 'login').and.callFake(function() { return false; });
     instance.selectUser(user);
+
+    //Act
     instance.login();
 
     //Assert
@@ -114,11 +113,11 @@ describe('LoginComponent', function() {
   it('Login_GivenValidUser_SuccessfulLogin', function() {
     //Arrange
     var user = getTestUser('user');
-
-    //Act
     spyOn(_router, 'navigate').and.callThrough();
     spyOn(_authService, 'login').and.callFake(function() { return true; });
     instance.selectUser(user);
+
+    //Act
     instance.login();
 
     //Assert
@@ -130,9 +129,9 @@ describe('LoginComponent', function() {
     // Arrange
     var user = getTestUser('user');
     var allUsers = getAllUsers();
+    instance.selectedUser = user;
 
     // Act
-    instance.selectedUser = user;
     instance.deleteUser();
 
     // Assert
@@ -142,9 +141,9 @@ describe('LoginComponent', function() {
   it('DeleteUser_GivenSelectedUser_ResetsTheSelectedUser', function() {
     // Arrange
     var user = getTestUser('user');
+    instance.selectedUser = user;
 
     // Act
-    instance.selectedUser = user;
     instance.deleteUser();
 
     // Assert
@@ -197,9 +196,13 @@ describe('LoginComponent', function() {
   });
 
   it('GetAllUsers_WhenLoginComponentIsInstantiated_AllUsersIsInitialized', function() {
-
+    // Arrange
     var localUsers = [{ 'name': 'Daniela', 'profileImg': 'danielImg' }, { 'name': 'Daniela1', 'profileImg': 'danielImg1' }];
 
+    // Act
+
+
+    // Assert
     expect(instance.allUsers).toEqual(localUsers);
   });
 });

@@ -26,6 +26,7 @@ describe('UserSettingsService', () => {
       UserSettingsEnums.BackgroundColor.InColor
     );
   }
+
   function getUserSettingsObject(
     pointerSize: UserSettingsEnums.PointerSize,
     pointerType: UserSettingsEnums.PointerType,

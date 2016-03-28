@@ -21,8 +21,6 @@ import {ImagesService} from '../../shared/services/ImagesService';
 import {UserSettings} from '../../shared/models/UserSettings';
 
 describe('UserSettingsComponentTests', function() {
-  var instance: UserSettingsComponent = null;
-
   class ImagesServiceMock {
     getPointerImages() {
       var pointerImages = '["./app/assets/images/pointer/small.png", "./app/assets/images/pointer/big.png"]';
@@ -56,18 +54,18 @@ describe('UserSettingsComponentTests', function() {
     return tcb.overrideTemplate(UserSettingsComponent, '').createAsync(UserSettingsComponent).then((fixture) => {
       // Arrange
       var bgColor: BackgroundColor = BackgroundColor.BlackAndWhite;
-      instance = fixture.componentInstance;
+      var instance = fixture.componentInstance;
       instance.userSettings = new UserSettings();
       instance.userSettings.backgroundColor = BackgroundColor.InColor;
       fixture.detectChanges();
-      spyOn(fixture.componentInstance.pointerColorService, 'getPointerColors').and.callFake(() => { });
+      spyOn(instance.pointerColorService, 'getPointerColors').and.callFake(() => { });
 
       // Act
       instance.setBackgroundColorAndPointerColors(bgColor);
 
       // Assert
       expect(instance.userSettings.backgroundColor).toEqual(bgColor);
-      expect(fixture.componentInstance.pointerColorService.getPointerColors).toHaveBeenCalledWith(bgColor);
+      expect(instance.pointerColorService.getPointerColors).toHaveBeenCalledWith(bgColor);
     });
   }));
 
@@ -77,7 +75,7 @@ describe('UserSettingsComponentTests', function() {
       var nonDefaultPointerColor: PointerColor = PointerColor.Blue;
       var defaultPointerColor: PointerColor = PointerColor.White;
       var bgColor: BackgroundColor = BackgroundColor.BlackAndWhite;
-      instance = fixture.componentInstance;
+      var instance = fixture.componentInstance;
       instance.userSettings = new UserSettings();
       instance.userSettings.backgroundColor = BackgroundColor.InColor;
       instance.userSettings.pointerColor = nonDefaultPointerColor;
@@ -99,7 +97,7 @@ describe('UserSettingsComponentTests', function() {
       // Arrange
       var defaultPointerColor: PointerColor = PointerColor.White;
       var newPointerColor: PointerColor = PointerColor.Blue;
-      instance = fixture.componentInstance;
+      var instance = fixture.componentInstance;
       instance.userSettings = new UserSettings();
       instance.userSettings.pointerColor = defaultPointerColor;
       fixture.detectChanges();
@@ -117,7 +115,7 @@ describe('UserSettingsComponentTests', function() {
       // Arrange
       var defaultPointerSize: PointerSize = PointerSize.Small;
       var newPointerSize: PointerSize = PointerSize.Medium;
-      instance = fixture.componentInstance;
+      var instance = fixture.componentInstance;
       instance.userSettings = new UserSettings();
       instance.userSettings.pointerSize = defaultPointerSize;
       fixture.detectChanges();
@@ -134,7 +132,7 @@ describe('UserSettingsComponentTests', function() {
     return tcb.overrideTemplate(UserSettingsComponent, '').createAsync(UserSettingsComponent).then((fixture) => {
       // Arrange
       var selectedBgColor: BackgroundColor = BackgroundColor.InColor;
-      instance = fixture.componentInstance;
+      var instance = fixture.componentInstance;
       instance.userSettings = new UserSettings();
       instance.userSettings.backgroundColor = selectedBgColor;
       fixture.detectChanges();
@@ -151,7 +149,7 @@ describe('UserSettingsComponentTests', function() {
     return tcb.overrideTemplate(UserSettingsComponent, '').createAsync(UserSettingsComponent).then((fixture) => {
       // Arrange
       var selectedPointerColor: PointerColor = PointerColor.White;
-      instance = fixture.componentInstance;
+      var instance = fixture.componentInstance;
       instance.userSettings = new UserSettings();
       instance.userSettings.pointerColor = selectedPointerColor;
       fixture.detectChanges();
@@ -169,7 +167,7 @@ describe('UserSettingsComponentTests', function() {
       // Arrange
       var selectedPointerSize: PointerSize = PointerSize.Small;
       var otherPointerSize: PointerSize = PointerSize.Medium;
-      instance = fixture.componentInstance;
+      var instance = fixture.componentInstance;
       instance.userSettings = new UserSettings();
       instance.userSettings.pointerSize = selectedPointerSize;
       fixture.detectChanges();

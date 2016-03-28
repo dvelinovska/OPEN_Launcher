@@ -1,3 +1,13 @@
+import {
+  beforeEach,
+  beforeEachProviders,
+  describe,
+  expect,
+  it,
+  inject,
+  injectAsync
+} from 'angular2/testing';
+
 import {AlertingService} from './AlertingService';
 
 describe('AlertingService', function() {
