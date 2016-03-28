@@ -83,12 +83,7 @@ a.link{
 }
 
 .deleteBtn{
-    display: none;
-}
-
-.displayDeleteBtn{
-     display: block; 
-     position:absolute;
-     top:0;
-     right:0;
+    position:absolute;
+    top:0;
+    right:0;
 }

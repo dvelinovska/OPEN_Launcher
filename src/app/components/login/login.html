@@ -13,13 +13,13 @@
                 <div class="col-sm-4 col-md-3 col-lg-2 top-buffer" *ngFor="#user of allUsers | usersFilter:usernameFilter">
                     <div class="row text-center">
                         <label class="text-overflow">{{user.name}}</label>
-                        <button id="deleteBtn" type="button" class="btn btn-danger btn-xs deleteBtn" [class.displayDeleteBtn]="ShouldApplySelectedUserCss(user)"
-                        aria-label="Left Align" data-toggle="modal" data-target="#myModal" data-backdrop="static">
+                        <button id="deleteBtn" type="button" class="btn btn-danger btn-xs deleteBtn"
+                        aria-label="Left Align" data-toggle="modal" data-target="#myModal" data-backdrop="static" *ngIf="ShouldApplySelectedUserLayout(user)">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </button>
                     </div>
                     <div class="row text-center">
-                        <img src="{{user.profileImg}}" class="img-circle" [class.selected]="ShouldApplySelectedUserCss(user)" (click)="selectUser(user)"
+                        <img src="{{user.profileImg}}" class="img-circle" [class.selected]="ShouldApplySelectedUserLayout(user)" (click)="selectUser(user)"
                         />
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                             <label class="text-overflow">{{selectedUser.name}}</label>
                         </div>
                         <div class="row text-center">
-                            <img src="{{selectedUser.profileImg}}" class="img-circle" [class.selected]="ShouldApplySelectedUserCss(selectedUser)" />
+                            <img src="{{selectedUser.profileImg}}" class="img-circle" [class.selected]="ShouldApplySelectedUserLayout(selectedUser)" />
                         </div>
                     </div>
                     <div class="modal-footer">
