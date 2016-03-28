@@ -1,4 +1,4 @@
-import {Component, Input, Output, OnChanges, EventEmitter} from 'angular2/core';
+import {Component, Input, OnChanges} from 'angular2/core';
 
 import {UserSettingsColorsService} from './UserSettingsColorsService';
 import {AlertingService} from '../alerting/AlertingService';
