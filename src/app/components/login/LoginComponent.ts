@@ -53,7 +53,7 @@ export class LoginComponent {
     this.selectedUser = user;
   }
 
-  ShouldApplySelectedUserCss(user: User): boolean {
+  ShouldApplySelectedUserLayout(user: User): boolean {
     return this.selectedUser === user;
   }
 

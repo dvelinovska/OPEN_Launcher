@@ -184,13 +184,13 @@ describe('LoginComponent', function() {
     expect(instance.selectedUser).toEqual(user);
   });
 
-  it('ShouldApplySelectedUserCss_GivenTheSelectedUser_ReturnsTrue', function() {
+  it('ShouldApplySelectedUserLayout_GivenTheSelectedUser_ReturnsTrue', function() {
     // Arrange
     var user = getTestUser('user');
 
     // Act
     instance.selectedUser = user;
-    var flag = instance.ShouldApplySelectedUserCss(user);
+    var flag = instance.ShouldApplySelectedUserLayout(user);
 
     // Assert
     expect(flag).toBeTruthy();
