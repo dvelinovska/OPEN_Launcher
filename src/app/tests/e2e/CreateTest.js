@@ -43,13 +43,13 @@ describe("Game menu log in user", function() {
 
   it("User can choose random picture", function() {
     CreateUserPage.clickCreateBtn();
-    SelectRandomPicture();
+    CreateUserPage.selectPicture();
   });
 
   it("When color game is selected there should be 5 colors to select", function() {
     CreateUserPage.clickCreateBtn();
     AutoGenerateUserName();
-    SelectRandomPicture();
+    CreateUserPage.selectPicture();
     CreateUserPage.SelectRadioButton(0);
     expect(CreateUserPage.NumberOfColors()).toEqual(5);
   });
@@ -57,7 +57,7 @@ describe("Game menu log in user", function() {
   it("When black and white game is selected there should be 2 colors to select", function() {
     CreateUserPage.clickCreateBtn();
     AutoGenerateUserName();
-    SelectRandomPicture();
+    CreateUserPage.selectPicture();
     CreateUserPage.SelectRadioButton(1);
     expect(CreateUserPage.NumberOfColors()).toEqual(2);
   });
@@ -65,7 +65,7 @@ describe("Game menu log in user", function() {
   it("When color game is selected there should be red color to select", function() {
     CreateUserPage.clickCreateBtn();
     AutoGenerateUserName();
-    SelectRandomPicture();
+    CreateUserPage.selectPicture();
     expect(CreateUserPage.IsRedPresent()).toBe(true);
   });
 
@@ -85,7 +85,7 @@ describe("Game menu log in user", function() {
 
   it("User can not be created without entering name ", function() {
     CreateUserPage.clickCreateBtn();
-    SelectRandomPicture();
+    CreateUserPage.selectPicture();
     CreateUserPage.clickCreateBtnAfter();
     expect(CreateUserPage.isCreateBtnEnabled()).toBe(false);
     console.log("Finishing : User can not be created");
@@ -109,7 +109,7 @@ describe("Game menu log in user", function() {
 
   it("Button back is clickable when picture is selected", function() {
     CreateUserPage.clickCreateBtn();
-    SelectRandomPicture();
+    CreateUserPage.selectPicture();
     CreateUserPage.clickBack();
     expect(CreateUserPage.GetCurrentUrl()).toEqual("http://localhost:3000/#/login");
     console.log("Button back is clickable")
@@ -117,17 +117,13 @@ describe("Game menu log in user", function() {
 
   it("Button back is clickable when picture is selected and name is populated", function() {
     CreateUserPage.clickCreateBtn();
-    SelectRandomPicture();
+    CreateUserPage.selectPicture();
     CreateUserPage.writeName("DAni");
     CreateUserPage.clickBack();
     expect(CreateUserPage.GetCurrentUrl()).toEqual("http://localhost:3000/#/login");
     console.log("Button back is clickable")
   });
 
-  it("User can choose random picture", function() {
-    CreateUserPage.clickCreateBtn();
-    SelectRandomPicture();
-  });
 
   /*it("Selected picture should match profile picure while creating a profile", function() {
   CreateUserPage.clickCreateBtn();
@@ -258,122 +254,6 @@ it("Entered name should match profile name while creating a profile", function()
     console.log("Finishing : User created");
   });
 
-<<<<<<< HEAD
-=======
-  it("User can create new user in color version with pointer size m and pointer color red", function() {
-    CreateUserPage.CreateUserSettingsRandom();
-    CreateUserPage.SelectRadioButton("0");
-    CreateUserPage.selectMediumPointer();
-    CreateUserPage.selectRedColor();
-    CreateUserPage.clickCreateBtnAfter();
-    browser.sleep(500);
-    browser.ignoreSynchronization = true;
-    expect(CreateUserPage.ReturnMessage()).toEqual("Успешно внесен корисник.");
-    browser.sleep(500);
-    browser.ignoreSynchronization = false;
-    console.log("Finishing : User created");
-  });
-
-   it("User can create new user in color version with pointer size m and pointer color white", function() {
-    CreateUserPage.CreateUserSettingsRandom();
-    CreateUserPage.SelectRadioButton("0");
-    CreateUserPage.selectMediumPointer();
-    CreateUserPage.selectWhiteColor();
-    CreateUserPage.clickCreateBtnAfter();
-    browser.sleep(500);
-    browser.ignoreSynchronization = true;
-    expect(CreateUserPage.ReturnMessage()).toEqual("Успешно внесен корисник.");
-    browser.sleep(500);
-    browser.ignoreSynchronization = false;
-    console.log("Finishing : User created");
-  });
-
-  it("User can create new user in color version with pointer size m and pointer color blue", function() {
-    CreateUserPage.CreateUserSettingsRandom();
-    CreateUserPage.SelectRadioButton("0");
-    CreateUserPage.selectMediumPointer();
-    CreateUserPage.selectBlueColor();
-    CreateUserPage.clickCreateBtnAfter();
-    browser.sleep(500);
-    browser.ignoreSynchronization = true;
-    expect(CreateUserPage.ReturnMessage()).toEqual("Успешно внесен корисник.");
-    browser.sleep(500);
-    browser.ignoreSynchronization = false;
-    console.log("Finishing : User created");
-  });
-
-  it("User can create new user in color version with pointer size m and pointer color green", function() {
-    CreateUserPage.CreateUserSettingsRandom();
-    CreateUserPage.SelectRadioButton("0");
-    CreateUserPage.selectMediumPointer();
-    CreateUserPage.selectGreenColor();
-    CreateUserPage.clickCreateBtnAfter();
-    browser.sleep(500);
-    browser.ignoreSynchronization = true;
-    expect(CreateUserPage.ReturnMessage()).toEqual("Успешно внесен корисник.");
-    browser.sleep(500);
-    browser.ignoreSynchronization = false;
-    console.log("Finishing : User created");
-  });
-
-  it("User can create new user in color version with pointer size m and pointer color yellow", function() {
-    CreateUserPage.CreateUserSettingsRandom();
-    CreateUserPage.SelectRadioButton("0");
-    CreateUserPage.selectMediumPointer();
-    CreateUserPage.selectYellowColor();
-    CreateUserPage.clickCreateBtnAfter();
-    browser.sleep(500);
-    browser.ignoreSynchronization = true;
-    expect(CreateUserPage.ReturnMessage()).toEqual("Успешно внесен корисник.");
-    browser.sleep(500);
-    browser.ignoreSynchronization = false;
-    console.log("Finishing : User created");
-  });
-
-
-   it("User can create new user in color version with pointer size s and pointer color red", function() {
-    CreateUserPage.CreateUserSettingsRandom();
-    CreateUserPage.SelectRadioButton("0");
-    CreateUserPage.selectSmallPointer();
-    CreateUserPage.selectRedColor();
-    CreateUserPage.clickCreateBtnAfter();
-    browser.sleep(500);
-    browser.ignoreSynchronization = true;
-    expect(CreateUserPage.ReturnMessage()).toEqual("Успешно внесен корисник.");
-    browser.sleep(500);
-    browser.ignoreSynchronization = false;
-    console.log("Finishing : User created");
-  });
-
-   it("User can create new user in color version with pointer size s and pointer color white", function() {
-    CreateUserPage.CreateUserSettingsRandom();
-    CreateUserPage.SelectRadioButton("0");
-    CreateUserPage.selectSmallPointer();
-    CreateUserPage.selectWhiteColor();
-    CreateUserPage.clickCreateBtnAfter();
-    browser.sleep(500);
-    browser.ignoreSynchronization = true;
-    expect(CreateUserPage.ReturnMessage()).toEqual("Успешно внесен корисник.");
-    browser.sleep(500);
-    browser.ignoreSynchronization = false;
-    console.log("Finishing : User created");
-  });
-
-  it("User can create new user in color version with pointer size s and pointer color blue", function() {
-    CreateUserPage.CreateUserSettingsRandom();
-    CreateUserPage.SelectRadioButton("0");
-    CreateUserPage.selectSmallPointer();
-    CreateUserPage.selectBlueColor();
-    CreateUserPage.clickCreateBtnAfter();
-    browser.sleep(500);
-    browser.ignoreSynchronization = true;
-    expect(CreateUserPage.ReturnMessage()).toEqual("Успешно внесен корисник.");
-    browser.sleep(500);
-    browser.ignoreSynchronization = false;
-    console.log("Finishing : User created");
-  });
-
->>>>>>> upstream/master
   it("User can create new user in color version with pointer size s and pointer color green", function() {
     CreateUserPage.CreateUserSettingsRandom();
     CreateUserPage.SelectRadioButton("0");
@@ -402,11 +282,7 @@ it("Entered name should match profile name while creating a profile", function()
     console.log("Finishing : User created");
   });
 
-<<<<<<< HEAD
-  it("User can create new user in color version with pointer size m and pointer color white", function() {
-=======
    it("User can create new user in color version with pointer size m and pointer color white", function() {
->>>>>>> upstream/master
     CreateUserPage.CreateUserSettingsRandom();
     CreateUserPage.SelectRadioButton("1");
     CreateUserPage.selectMediumPointer();
@@ -420,11 +296,7 @@ it("Entered name should match profile name while creating a profile", function()
     console.log("Finishing : User created");
   });
 
-<<<<<<< HEAD
-  it("User can create new user in color version with pointer size m and pointer color yellow", function() {
-=======
    it("User can create new user in color version with pointer size m and pointer color yellow", function() {
->>>>>>> upstream/master
     CreateUserPage.CreateUserSettingsRandom();
     CreateUserPage.SelectRadioButton("1");
     CreateUserPage.selectMediumPointer();
