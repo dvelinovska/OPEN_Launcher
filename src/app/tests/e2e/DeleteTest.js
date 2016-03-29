@@ -14,12 +14,12 @@ describe("Game menu delete user", function() {
 
 
 
-    it("should delete profile and remove it from the profile page and alert to be displayed", function() {
+  it("should delete profile and remove it from the profile page and alert to be displayed", function() {
     DeleteUser.DeleteProfile();
     browser.sleep(500);
     browser.ignoreSynchronization = true;
     expect(DeleteUser.ReturnMessage()).toEqual("Профилот е успешно избришан.");
-     browser.sleep(500);
+    browser.sleep(500);
     browser.ignoreSynchronization = false;
     console.log("Finishing : Delete profile");
 

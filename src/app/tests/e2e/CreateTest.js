@@ -34,7 +34,11 @@ describe("Game menu log in user", function() {
     browser.ignoreSynchronization = true;
     expect(CreateUserPage.ReturnMessage()).toEqual("Корисничкото име веќе постои, обидете се да се регистрирате со друго име");
     CreateUserPage.clickBack();
-    LogInPage.FilterUsername("Josif");
+    LogInPage.FilterUsername("J");
+    LogInPage.FilterUsername("o");
+    LogInPage.FilterUsername("s");
+    LogInPage.FilterUsername("i");
+    LogInPage.FilterUsername("f");
     DeleteUser.DeleteFilteredUser();
     browser.sleep(500);
     browser.ignoreSynchronization = false;
@@ -123,23 +127,6 @@ describe("Game menu log in user", function() {
     expect(CreateUserPage.GetCurrentUrl()).toEqual("http://localhost:3000/#/login");
     console.log("Button back is clickable")
   });
-
-
-  /*it("Selected picture should match profile picure while creating a profile", function() {
-  CreateUserPage.clickCreateBtn();
-  SelectRandomPicture();
-  expect(CreateUserPage.GetImageUrl()).toMatch(CreateUserPage.GetProfileImageUrl());
-});
-
-
-
-it("Entered name should match profile name while creating a profile", function() {
-  CreateUserPage.clickCreateBtn();
-  CreateUserPage.writeName("Dani");
-  SelectRandomPicture();
-  expect(CreateUserPage.GetProfileName()).toEqual("Dani");
-});
-*/
 
   it("User can create new user in color version with pointer size m and pointer color red", function() {
     CreateUserPage.CreateUserSettingsRandom();
