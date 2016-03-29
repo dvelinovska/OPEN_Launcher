@@ -22,7 +22,6 @@ export class UserSettingsEditComponent {
     private userSettingsService: UserSettingsService) {
 
     this.userName = authService.getUser();
-   // console.log("GetUser method: " + this.userName);
     this.userSettingsService.getUserSettingsFor(this.userName)
       .subscribe(data => this.userSettings = data);
   }
