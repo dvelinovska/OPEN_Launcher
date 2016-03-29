@@ -1,67 +1,67 @@
+import {
+    beforeEachProviders,
+    describe,
+    expect,
+    it
+} from 'angular2/testing';
 import {AlertingService} from './AlertingService';
 
-describe('AlertingService', function() {
-  var instance: AlertingService = null;
+describe('AlertingServiceTests', function() {
+    var instance: AlertingService = null;
 
-  beforeEach(() => {
-    instance = new AlertingService();
-  });
+    beforeEach(function() {
+        instance = new AlertingService();
+    });
 
-  it('AlertingService_NewInstance_CurrentAlertsLengthIsEqualZero', function() {
-    // Assert
-    expect(instance.currentAlerts.length).toEqual(0);
-  });
+    it('addAlert_givenAlert_currentAlertsLengthShouldBeEqualToOne', function() {
+        // Act
+        instance.addAlert('type', 'message');
 
-  it('AlertingService_addAlert_CurrentAlertsLengthIsEqualOne', function() {
-    // Act
-    instance.addAlert('type', 'message');
+        // Assert
+        expect(instance.currentAlerts.length).toEqual(1);
+    });
 
-    // Assert
-    expect(instance.currentAlerts.length).toEqual(1);
-  });
+    it('addSuccess_givenAlertAndCurrentAlertsArrayIsEmpty_typeOfTheAddedAlertShouldBeSuccess', function() {
+        // Act
+        instance.addSuccess('message');
 
-  it('AlertingService_addSuccess_TypeOfTheAddedAlertIsSuccess', function() {
-    // Act
-    instance.addSuccess('message');
+        // Assert
+        expect(instance.currentAlerts[0].type).toEqual('success');
+    });
 
-    // Assert
-    expect(instance.currentAlerts[0].type).toEqual('success');
-  });
+    it('addInfo_givenAlertAndCurrentAlertsArrayIsEmpty_typeOfTheAddedAlertShouldBeInfo', function() {
+        // Act
+        instance.addInfo('message');
 
-  it('AlertingService_addInfo_TypeOfTheAddedAlertIsInfo', function() {
-    // Act
-    instance.addInfo('message');
+        // Assert
+        expect(instance.currentAlerts[0].type).toEqual('info');
+    });
 
-    // Assert
-    expect(instance.currentAlerts[0].type).toEqual('info');
-  });
+    it('addWarning_givenAlertAndCurrentAlertsArrayIsEmpty_typeOfTheAddedAlertShouldBeWarning', function() {
+        // Act
+        instance.addWarning('message');
 
-  it('AlertingService_addWarning_TypeOfTheAddedAlertIsWarning', function() {
-    // Act
-    instance.addWarning('message');
+        // Assert
+        expect(instance.currentAlerts[0].type).toEqual('warning');
+    });
 
-    // Assert
-    expect(instance.currentAlerts[0].type).toEqual('warning');
-  });
+    it('addDanger_givenAlertAndCurrentAlertsArrayIsEmpty_TypeOfTheAddedAlertShouldBeDanger', function() {
+        // Act
+        instance.addDanger('message');
 
-  it('AlertingService_addDanger_TypeOfTheAddedAlertIsDanger', function() {
-    // Act
-    instance.addDanger('message');
+        // Assert
+        expect(instance.currentAlerts[0].type).toEqual('danger');
+    });
 
-    // Assert
-    expect(instance.currentAlerts[0].type).toEqual('danger');
-  });
+    it('removeAlert_givenCurrentAlertsArrayHasOneAlert_shouldRemoveAndCurrentAlertsArrayShouldBeEmpty', function() {
+        // Arrange
+        instance.addDanger('message');
+        var noAlerts = instance.currentAlerts.length;
 
-  it('AlertingService_removeAlert_ValidateThatAlertIsDismissed', function() {
-    // Act
-    instance.addDanger('message');
-    instance.addDanger('message');
+        // Act
+        instance.removeAlert(instance.currentAlerts[0]);
 
-    var noAlerts = instance.currentAlerts.length;
-    instance.removeAlert(instance.currentAlerts[0]);
-
-    // Assert
-    expect(instance.currentAlerts.length).toEqual(noAlerts - 1);
-  });
+        // Assert
+        expect(instance.currentAlerts.length).toEqual(noAlerts - 1);
+    });
 });
-

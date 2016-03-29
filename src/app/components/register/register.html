@@ -1,0 +1,54 @@
+<div class="form-horizontal">
+    <div class="container-fluid">
+
+        <div class="col-sm-4 col-md-3 col-lg-2 top-buffer">
+            <div class="row text-center">
+                <label>Вашиот профил:</label>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="profileBox center-block">
+                        <div class="title text-center">
+                            <label>{{user.name}}</label>
+                        </div>
+                        <div><img src="{{user.profileImg}}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-8 col-md-9 col-lg-10">
+            <form [ngFormModel]="registerForm" (ngSubmit)="onSubmit()">
+                <div class="form-group top-buffer">
+                    <label class="col-sm-2 control-label">Корисничко име:</label>
+                    <div class="col-sm-8 col-md-4 col-lg-2">
+                        <input type="text" ngControl="name" id="username" class="form-control" placeholder="Корисничко име" [(ngModel)]='user.name'
+                        />
+                    </div>
+                </div>
+
+                <div class="form-group top-buffer">
+                    <label class="col-sm-2 control-label">Слика:</label>
+                    <div class="col-sm-10">
+                        <div class="col-sm-6 col-md-3 col-lg-2 top-buffer" *ngFor="#img of allImages">
+                            <img src="{{img}}" class="img-circle" (click)="onSelect(img)" [class.selected]="img === user.profileImg" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group top-buffer">
+                    <settings [userSettings]="user.userSettings"></settings>
+                </div>
+
+                <div class="form-group top-buffer">
+                    <div class="col-sm-2 col-md-1 col-sm-offset-2">
+                        <button type="submit" id="createNewUser" class="btn btn-primary" [disabled]="!registerForm.valid">Креирај</button>
+                    </div>
+                    <div class="col-sm-2 col-xs-offset-1 col-md-offset-0 left-buffer">
+                        <a id="backToLogin" class="btn btn-default" [routerLink]="['/Login']">Назад</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,27 +1,34 @@
+import {
+    beforeEach,
+    describe,
+    expect,
+    it
+} from 'angular2/testing';
 import {UserSettingsColorsService} from './UserSettingsColorsService';
 import {PointerColor, BackgroundColor} from '../../shared/enums/UserSettingsEnums';
 
+describe('UserSettingsColorsServiceTests', function() {
+    var instance: UserSettingsColorsService = null;
 
-describe('UserSettingsColorsService', function() {
-  var instance: UserSettingsColorsService = null;
+    beforeEach(function() {
+        instance = new UserSettingsColorsService();
+    });
 
-  beforeEach(() => {
-    instance = new UserSettingsColorsService();
-  });
+    it('getPointerColors_givenBlackAndWhiteBgColor_getsWhiteAndYellowPointer',
+        function() {
+            // Act
+            var pointerColors = instance.getPointerColors(BackgroundColor.BlackAndWhite);
 
-  it('UserSettingsColorsService_getPointerColors_ForBlackWhiteColor', function() {
-    // Act
-    var pointerColors = instance.getPointerColors(BackgroundColor.BlackAndWhite);
+            // Assert
+            expect(pointerColors.length).toEqual(2);
+        });
 
-    // Assert
-    expect(pointerColors.length).toEqual(2);
-  });
+    it('getPointerColors_givenInColorBgColor_getsAllColorsAvailableFromEnums',
+        function() {
+            // Act
+            var inColorAvailablePointerColor = instance.getPointerColors(BackgroundColor.InColor);
 
-  it('UserSettingsColorsService_getPointerColors_ForInColor', function() {
-    // Act
-    var inColorAvailablePointerColor = instance.getPointerColors(BackgroundColor.InColor);
-
-    // Assert
-    expect(inColorAvailablePointerColor.length).toEqual(5);
-  });
+            // Assert
+            expect(inColorAvailablePointerColor.length).toEqual(5);
+        });
 });

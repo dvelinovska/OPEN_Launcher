@@ -11,7 +11,7 @@ import {HTTP_PROVIDERS} from 'angular2/http';
  */
 import {HomeComponent} from './app/components/home/HomeComponent';
 import {UploadPictureComponent} from './app/components/upload/UploadPictureComponent';
-import {RegisterComponent} from './app/components/registration/RegisterComponent';
+import {RegisterComponent} from './app/components/register/RegisterComponent';
 import {LoginComponent} from './app/components/login/LoginComponent';
 import {AlertingComponent} from './app/components/alerting/AlertingComponent';
 import {UserSettingsEditComponent} from './app/components/userSettingsEdit/UserSettingsEditComponent';

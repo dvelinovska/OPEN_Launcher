@@ -1,85 +1,83 @@
 import {
-  beforeEach,
-  beforeEachProviders,
-  describe,
-  expect,
-  it,
-  inject,
-  injectAsync
+    beforeEachProviders,
+    describe,
+    expect,
+    it,
+    inject
 } from 'angular2/testing';
-
-import {provide, Injector} from 'angular2/core';
-
+import {provide} from 'angular2/core';
 import {Alert} from './Alert';
 import {AlertingComponent} from './AlertingComponent';
 import {AlertingService} from './AlertingService';
 
-describe('AlertingComponent', function() {
-  class AlertingServiceMock {
-    currentAlerts: Array<Alert> = new Array<Alert>();
+describe('AlertingComponentTests', function() {
+    var instance: AlertingComponent = null;
+    class AlertingServiceMock {
+        currentAlerts: Array<Alert> = new Array<Alert>();
 
-    addAlert(type: string, message: string) {
-      var alert = new Alert(type, message);
-      this.currentAlerts.push(alert);
-    }
-
-    removeAlert(alert: Alert) {
-      for (var index = 0; index < this.currentAlerts.length; index++) {
-        if (this.currentAlerts[index] === alert) {
-          this.currentAlerts.splice(index, 1);
-          break;
+        addAlert(type: string, message: string) {
+            var alert = new Alert(type, message);
+            this.currentAlerts.push(alert);
         }
-      }
+
+        removeAlert(alert: Alert) {
+            for (var index = 0; index < this.currentAlerts.length; index++) {
+                if (this.currentAlerts[index] === alert) {
+                    this.currentAlerts.splice(index, 1);
+                    break;
+                }
+            }
+        }
     }
-  }
 
-  var injector: Injector;
-  var instance: AlertingComponent = null;
-  var _alertingService: AlertingService;
-
-  beforeEach(() => {
-    injector = Injector.resolveAndCreate([
-      provide(AlertingService, { useClass: AlertingServiceMock })
+    beforeEachProviders(() => [
+        provide(AlertingService, { useClass: AlertingServiceMock }),
+        AlertingComponent
     ]);
 
-    _alertingService = injector.get(AlertingService);
-  });
+    it('getCurrentAlerts_shouldBeEqualToAlertingServiceCurrentAlerts',
+        inject([AlertingComponent], (instance) => {
+            // Arrange
+            var expectedResult = instance.alertingService.currentAlerts;
 
-  it('AlertingComponent_alerts_AreEqualToAlertingServiceCurrentAlerts', function() {
-    // Arrange
-    instance = new AlertingComponent(_alertingService);
+            // Act
+            var result = instance.getCurrentAlerts();
 
-    // Assert
-    expect(instance.alerts()).toEqual(_alertingService.currentAlerts);
-  });
+            // Assert
+            expect(result).toEqual(expectedResult);
+        }));
 
-  it('AlertingComponent_hasAlerts_ReturnTrueWhenServiceHasAlerts', function() {
-    // Arrange
-    instance = new AlertingComponent(_alertingService);
-    _alertingService.addAlert('info', 'message');
+    it('hasAlerts_givenAlertingServiceHasAlerts_shouldReturnTrue',
+        inject([AlertingComponent], (instance) => {
+            // Arrange
+            instance.alertingService.addAlert('info', 'message');
 
-    // Assert
-    expect(instance.hasAlerts()).toEqual(true);
-  });
+            // Act
+            var result = instance.hasAlerts();
 
-  it('AlertingComponent_hasAlerts_ReturnFalseWhenServiceAlertsAreEmpty', function() {
-    // Arrange
-    instance = new AlertingComponent(_alertingService);
+            // Assert
+            expect(result).toBeTruthy();
+        }));
 
-    // Assert
-    expect(instance.hasAlerts()).toEqual(false);
-  });
+    it('hasAlerts_givenAlertingServiceDoesntHaveAlerts_shouldReturnFalse',
+        inject([AlertingComponent], (instance) => {
+            // Act
+            var result = instance.hasAlerts();
 
-  it('AlertingComponent_hasAlerts_ReturnFalseWhenServiceAlertsAreEmpty', function() {
-    // Arrange
-    instance = new AlertingComponent(_alertingService);
-    var alert: Alert = new Alert('info', 'message');
+            // Assert
+            expect(result).toBeFalsy();
+        }));
 
-    // Act
-    _alertingService.currentAlerts = [alert];
-    instance.removeAlert(alert);
+    it('removeAlert_givenServiceAlertsHasOneCurrentAlert_shouldRemoveAndCurrentAlertsArrayShouldBeEmpty',
+        inject([AlertingComponent], (instance) => {
+            // Arrange
+            var alert: Alert = new Alert('info', 'message');
+            instance.alertingService.currentAlerts = [alert];
 
-    // Assert
-    expect(instance.hasAlerts()).toEqual(false);
-  });
+            // Act    
+            instance.removeAlert(alert);
+
+            // Assert
+            expect(instance.hasAlerts()).toBeFalsy();
+        }));
 });
