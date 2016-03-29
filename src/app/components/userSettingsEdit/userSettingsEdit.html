@@ -1,11 +1,18 @@
-<div class="form-group ">
-  <settings [userSettings]="userSettings"></settings>
-</div>
-<div class="form-group ">
-  <div class="col-sm-1 col-sm-offset-2 top-buffer">
-    <button type="submit" id="saveUserSettings" class="btn btn-primary" (click)=saveUserSettings()>Зачувај промени</button>
-  </div>
-  <div class="col-sm-4 top-buffer">
-    <a class="btn btn-default" id="BackToLoginPage" [routerLink]="['/Login']">Назад</a>
+<div class="form-horizontal">
+  <div class="container-fluid">
+
+    <div class="form-group top-buffer">
+      <settings [userSettings]="userSettings"></settings>
+    </div>
+
+    <div class="form-group top-buffer">
+      <div class="col-sm-1 col-sm-offset-2">
+        <button type="submit" id="saveUserSettings" class="btn btn-primary" (click)=saveUserSettings()>Зачувај промени</button>
+      </div>
+      <div class="col-sm-1">
+        <a class="btn btn-default" id="BackToLoginPage" [routerLink]="['/Login']">Назад</a>
+      </div>
+    </div>
+
   </div>
 </div>
