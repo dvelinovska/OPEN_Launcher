@@ -159,7 +159,7 @@ describe('LoginComponentTests', function() {
             expect(flag).toBeTruthy();
         }));
 
-    it('getAllUsers_givenAvailableUserService_shouldReturn',
+    it('getAllUsers_givenAvailableUserService_shouldReturnAllUsers',
         inject([LoginComponent], (instance) => {
             // Arrange
             var localUsers = [{ 'name': 'user1' }, { 'name': 'user2' }];
