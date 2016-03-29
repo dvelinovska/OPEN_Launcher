@@ -18,27 +18,27 @@ var UserSettingsEditPage = function() {
     browser.get(value);
   };
 
-  this.clickUserSettings = function(){
+  this.openUserSettings = function() {
     userSettings.click();
   }
 
-  this.isRedColorSelected = function(){
-    return colorRedSelected.isSelected();
+  this.isRedColorSelected = function() {
+    return colorRedSelected.isPresent();
   };
 
-  this.isWhiteColorSelected = function(){
-    return whiteColor.isSelected();
+  this.isWhiteColorSelected = function() {
+    return whiteColor.isPresent();
   };
 
   this.isMediumPointerSelected = function() {
-    return mediumPointer.isSelected();
+    return mediumPointer.isPresent();
   };
 
   this.isSmallPointerSelected = function() {
-    return smallPointer.isSelected();
+    return smallPointer.isPresent();
   };
 
-   this.logInFilteredUser = function() {
+  this.logInFilteredUser = function() {
     someProfile.click();
     signBtn.click();
   };
