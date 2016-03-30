@@ -1,51 +1,31 @@
 import {
-  beforeEach,
-  beforeEachProviders,
-  describe,
-  expect,
-  it,
-  inject,
-  injectAsync
+    beforeEach,
+    describe,
+    expect,
+    it
 } from 'angular2/testing';
 
-import {Component} from 'angular2/core';
 import {GlobalService} from './GlobalService';
 
 var instance: GlobalService = new GlobalService();
-describe('GlobalService', () => {
-  it('shouldGetTheURLFor_addUser', function() {
-    instance = new GlobalService();
+describe('GlobalServiceTests', () => {
+    beforeEach(() => {
+        instance = new GlobalService();
+    });
 
-    expect(instance.URL_ADDUSER).toEqual('http://localhost:3000/api/addUser');
-  });
+    it('URL_GETUSER_givenUsername_shouldGetApiUserPath', function() {
+        expect(instance.URL_GETUSER('eljesa')).toEqual('http://localhost:3000/api/getAllUsers/eljesa');
+    });
 
-  it('shouldGetTheURLFor_uploadPicture', function() {
-    instance = new GlobalService();
+    it('URL_DELETEUSER_givenUsername_shouldGetApiDeleteUserPath', function() {
+        expect(instance.URL_DELETEUSER('eljesa')).toEqual('http://localhost:3000/api/deleteUser/eljesa');
+    });
 
-    expect(instance.URL_UPLOAD_PICTURE).toEqual('http://localhost:3000/api/upload');
-  });
+    it('URL_GET_USERSETTINGS_givenUsername_shouldGetApiUserSettingsPath', function() {
+        expect(instance.URL_GET_USERSETTINGS('eljesa')).toEqual('http://localhost:3000/api/getUserSettings/eljesa');
+    });
 
-  it('shouldGetTheURLFor_getAllUsers', function() {
-    instance = new GlobalService();
-
-    expect(instance.URL_GETALLUSERS).toEqual('http://localhost:3000/api/getAllUsers');
-  });
-
-  it('shouldGetTheURLFor_getUser', function() {
-    instance = new GlobalService();
-
-    expect(instance.URL_GETUSER('eljesa')).toEqual('http://localhost:3000/api/getAllUsers/eljesa');
-  });
-
-  it('shouldGetTheURLFor_deleteUser', function() {
-    instance = new GlobalService();
-
-    expect(instance.URL_DELETEUSER('eljesa')).toEqual('http://localhost:3000/api/deleteUser/eljesa');
-  });
-
-  it('shouldGetTheURLFor_getProfileImages', function() {
-    instance = new GlobalService();
-
-    expect(instance.URL_GETPROFILE_IMAGES).toEqual('http://localhost:3000/api/GetProfileImages/');
-  });
+    it('URL_SAVE_USERSETTINGS_givenUsername_shouldGetApiSaveUserSettingsPath', function() {
+        expect(instance.URL_SAVE_USERSETTINGS('eljesa')).toEqual('http://localhost:3000/api/saveUserSettings/eljesa');
+    });
 });

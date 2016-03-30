@@ -1,13 +1,9 @@
 import {
-  beforeEach,
-  beforeEachProviders,
-  describe,
-  expect,
-  it,
-  inject,
-  injectAsync,
-  TestComponentBuilder,
-  ComponentFixture
+    beforeEachProviders,
+    describe,
+    expect,
+    it,
+    inject
 } from 'angular2/testing';
 
 import {provide, Component} from 'angular2/core';
@@ -21,174 +17,157 @@ import {AlertingService} from '../alerting/AlertingService';
 import {LoginComponent} from './LoginComponent';
 import {Alert} from '../alerting/Alert';
 
-describe('LoginComponent', function() {
-  var instance: LoginComponent = null;
+describe('LoginComponentTests', function() {
+    var instance: LoginComponent = null;
 
-  function getTestUser(name) {
-    var user = new User();
-    user.name = name;
-    return user;
-  }
-
-  function getAllUsers() {
-    var user1 = new User();
-    user1.name = 'user1';
-    var user2 = new User();
-    user2.name = 'user2';
-    var allUsers: User[] = new Array<User>();
-    allUsers[0] = user1;
-    allUsers[1] = user2;
-    return allUsers;
-  }
-
-  class UserServiceMock {
-    deleteUser(name) {
-      var allUsers = getAllUsers();
-      return Observable.of(allUsers);
+    function getTestUser(name: string) {
+        var user = new User();
+        user.name = name;
+        return user;
     }
 
-    getAllUsers() {
-      var string1 = '[{"name": "Daniela", "profileImg":"danielImg"},{"name": "Daniela1", "profileImg":"danielImg1"}]';
-      var obj = JSON.parse(string1);
-      return Observable.of(obj);
+    class UserServiceMock {
+        deleteUser(name) {
+            var allUsers: User[] = new Array<User>();
+            allUsers[0] = getTestUser('user1');
+            return Observable.of(allUsers);
+        }
+
+        getAllUsers(): Observable<User[]> {
+            var allUsers: User[] = new Array<User>();
+            var string1 = '[{"name": "user1"}, {"name": "user2"}]';
+            var obj = JSON.parse(string1);
+            return Observable.of(obj);
+        }
     }
-  }
 
-  class AlertingServiceMock {
-    addDanger() { }
-    addSuccess() { }
-    addInfo() { }
-  }
+    class RouterMock {
+        navigate() { }
+    }
 
-  class AuthServiceMock {
-    login() { }
-  }
+    beforeEachProviders(() => [
+        provide(AlertingService, { useClass: AlertingService }),
+        provide(UserService, { useClass: UserServiceMock }),
+        provide(AuthService, { useClass: AuthService }),
+        provide(Router, { useClass: RouterMock }),
+        LoginComponent
+    ]);
 
-  class RouterMock {
-    navigate() { }
-  }
+    it('login_givenInvalidUser_shouldSetUnsuccessfulLoginAlertMessage',
+        inject([LoginComponent], (instance) => {
+            //Arrange
+            var user = getTestUser('user');
+            spyOn(instance.alertingService, 'addDanger').and.callFake(() => { });
+            spyOn(instance.authService, 'login').and.callFake(() => { return false; });
+            instance.selectUser(user);
 
-  beforeEachProviders(() => [
-    provide(AlertingService, { useClass: AlertingServiceMock }),
-    provide(UserService, { useClass: UserServiceMock }),
-    provide(AuthService, { useClass: AuthServiceMock }),
-    provide(Router, { useClass: RouterMock }),
-    LoginComponent
-  ]);
+            //Act
+            instance.login();
 
-  it('Login_GivenInavlidUser_UnsuccessfulLogin',
-    inject([LoginComponent], (instance) => {
-      //Arrange
-      var user = getTestUser('user');
+            //Assert
+            expect(instance.authService.login).toHaveBeenCalledWith(user.name);
+            expect(instance.alertingService.addDanger).toHaveBeenCalledWith('Корисникот не е валиден.');
+        }));
 
-      //Act
-      spyOn(instance.alertingService, 'addDanger').and.callThrough();
-      spyOn(instance.authService, 'login').and.callFake(function() { return false; });
-      instance.selectUser(user);
-      instance.login();
+    it('login_givenValidUser_shouldSetSuccessfulLoginAlertMessageAndShouldRedirectToHome',
+        inject([LoginComponent], (instance) => {
+            //Arrange
+            var user = getTestUser('user');
+            spyOn(instance.router, 'navigate').and.callFake(() => { });
+            spyOn(instance.authService, 'login').and.callFake(function() { return true; });
+            instance.selectUser(user);
 
-      //Assert
-      expect(instance.authService.login).toHaveBeenCalledWith(user.name);
-      expect(instance.alertingService.addDanger).toHaveBeenCalledWith('Корисникот не е валиден.');
-    }));
+            //Act
+            instance.login();
 
-  it('Login_GivenValidUser_SuccessfulLogin',
-    inject([LoginComponent], (instance) => {
-      //Arrange
-      var user = getTestUser('user');
+            //Assert
+            expect(instance.authService.login).toHaveBeenCalledWith(user.name);
+            expect(instance.router.navigate).toHaveBeenCalledWith(['/Home']);
+        }));
 
-      //Act
-      spyOn(instance.router, 'navigate').and.callThrough();
-      spyOn(instance.authService, 'login').and.callFake(function() { return true; });
-      instance.selectUser(user);
-      instance.login();
+    it('deleteUser_givenSelectedUser_shouldDeleteUser',
+        inject([LoginComponent], (instance) => {
+            // Arrange
+            instance.selectedUser = getTestUser('user1');
 
-      //Assert
-      expect(instance.authService.login).toHaveBeenCalledWith(user.name);
-      expect(instance.router.navigate).toHaveBeenCalledWith(['/Home']);
-    }));
+            // Act
+            instance.deleteUser();
 
-  it('DeleteUser_GivenSelectedUser_DeletesTheSelectedUser',
-    inject([LoginComponent], (instance) => {
-      // Arrange
-      var user = getTestUser('user');
-      var allUsers = getAllUsers();
+            // Assert
+            expect(instance.allUsers.length).toEqual(1);
+        }));
 
-      // Act
-      instance.selectedUser = user;
-      instance.deleteUser();
+    it('deleteUser_givenSelectedUser_shouldResetTheSelectedUser',
+        inject([LoginComponent], (instance) => {
+            // Arrange
+            var user = getTestUser('user');
+            instance.selectedUser = user;
 
-      // Assert
-      expect(instance.allUsers).toEqual(allUsers);
-    }));
+            // Act
+            instance.deleteUser();
 
-  it('DeleteUser_GivenSelectedUser_ResetsTheSelectedUser',
-    inject([LoginComponent], (instance) => {
-      // Arrange
-      var user = getTestUser('user');
+            // Assert
+            expect(instance.selectedUser).not.toEqual(user);
+        }));
 
-      // Act
-      instance.selectedUser = user;
-      instance.deleteUser();
+    it('deleteUser_givenSelectedUser_shouldSetSuccessAlertMessage',
+        inject([LoginComponent], (instance) => {
+            //Arrange
+            spyOn(instance.alertingService, 'addSuccess').and.callFake(() => { });
 
-      // Assert
-      expect(instance.selectedUser).not.toEqual(user);
-    }));
+            // Act
+            instance.deleteUser();
 
-  it('DeleteUser_WhenUserIsDeleted_SuccessMessageIsShown',
-    inject([LoginComponent], (instance) => {
-      //Arrange
-      spyOn(instance.alertingService, 'addSuccess').and.callThrough();
+            // Assert
+            expect(instance.alertingService.addSuccess).toHaveBeenCalledWith('Профилот е успешно избришан.');
+        }));
 
-      // Act
-      instance.deleteUser();
+    it('deleteCancelled_givenCancelDeletingIsChosen_shouldSetInfoAlertMessage',
+        inject([LoginComponent], (instance) => {
+            //Arrange
+            spyOn(instance.alertingService, 'addInfo').and.callFake(() => { });
 
-      // Assert
-      expect(instance.alertingService.addSuccess).toHaveBeenCalledWith('Профилот е успешно избришан.');
-    }));
+            // Act
+            instance.deleteCancelled();
 
-  it('DeleteCancelled_WhenDeleteIsCancelled_InfoMessageIsShown',
-    inject([LoginComponent], (instance) => {
-      //Arrange
-      spyOn(instance.alertingService, 'addInfo').and.callThrough();
+            // Assert
+            expect(instance.alertingService.addInfo).toHaveBeenCalledWith('Бришењето е откажано.');
+        }));
 
-      // Act
-      instance.deleteCancelled();
+    it('selectUser_givenValidUser_shouldSetTheSelectedUser',
+        inject([LoginComponent], (instance) => {
+            // Arrange
+            var user = getTestUser('user');
 
-      // Assert
-      expect(instance.alertingService.addInfo).toHaveBeenCalledWith('Бришењето е откажано.');
-    }));
+            // Act
+            instance.selectUser(user);
 
-  it('SelectUser_GivenAuser_SetsTheSelectedUser',
-    inject([LoginComponent], (instance) => {
-      // Arrange
-      var user = getTestUser('user');
+            // Assert
+            expect(instance.selectedUser).toEqual(user);
+        }));
 
-      // Act
-      instance.selectUser(user);
+    it('shouldApplySelectedUserLayout_givenSelectedUser_shouldReturnTrue',
+        inject([LoginComponent], (instance) => {
+            // Arrange
+            var user = getTestUser('user');
 
-      // Assert
-      expect(instance.selectedUser).toEqual(user);
-    }));
+            // Act
+            instance.selectedUser = user;
+            var flag = instance.shouldApplySelectedUserLayout(user);
 
-  it('ShouldApplySelectedUserLayout_GivenTheSelectedUser_ReturnsTrue',
-    inject([LoginComponent], (instance) => {
-      // Arrange
-      var user = getTestUser('user');
+            // Assert
+            expect(flag).toBeTruthy();
+        }));
 
-      // Act
-      instance.selectedUser = user;
-      var flag = instance.ShouldApplySelectedUserLayout(user);
+    it('getAllUsers_givenAvailableUserService_shouldReturnAllUsers',
+        inject([LoginComponent], (instance) => {
+            // Arrange
+            var localUsers = [{ 'name': 'user1' }, { 'name': 'user2' }];
 
-      // Assert
-      expect(flag).toBeTruthy();
-    }));
+            // Act
+            instance.getAllUsers();
 
-  it('GetAllUsers_WhenLoginComponentIsInstantiated_AllUsersIsInitialized',
-    inject([LoginComponent], (instance) => {
-
-      var localUsers = [{ 'name': 'Daniela', 'profileImg': 'danielImg' }, { 'name': 'Daniela1', 'profileImg': 'danielImg1' }];
-
-      expect(instance.allUsers).toEqual(localUsers);
-    }));
+            // Assert
+            expect(instance.allUsers).toEqual(localUsers);
+        }));
 });

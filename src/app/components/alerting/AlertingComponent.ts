@@ -8,7 +8,7 @@ import {Alert} from './Alert';
     selector: 'alerts',
     template: `
         <div *ngIf="hasAlerts()">
-            <div *ngFor="#alert of alerts()" class="alert alert-{{alert.type}}">
+            <div *ngFor="#alert of getCurrentAlerts()" class="alert alert-{{alert.type}}">
                 <label id="messagelabel">{{ alert.message }}</label>
                 <div class="close" (click)="removeAlert(alert)">
                     <span class="glyphicon glyphicon-remove"></span>
@@ -17,9 +17,9 @@ import {Alert} from './Alert';
         </div>`
 })
 export class AlertingComponent {
-    constructor(private alertingService: AlertingService) {}
+    constructor(private alertingService: AlertingService) { }
 
-    alerts(): Alert[] {
+    getCurrentAlerts(): Alert[] {
         return this.alertingService.currentAlerts;
     }
 
