@@ -34,11 +34,7 @@ describe("Game menu log in user", function() {
     browser.ignoreSynchronization = true;
     expect(CreateUserPage.ReturnMessage()).toEqual("Корисничкото име веќе постои, обидете се да се регистрирате со друго име");
     CreateUserPage.clickBack();
-    LogInPage.FilterUsername("J");
-    LogInPage.FilterUsername("o");
-    LogInPage.FilterUsername("s");
-    LogInPage.FilterUsername("i");
-    LogInPage.FilterUsername("f");
+    LogInPage.FilterUsernameJosif();
     DeleteUser.DeleteFilteredUser();
     browser.sleep(500);
     browser.ignoreSynchronization = false;
@@ -269,7 +265,7 @@ describe("Game menu log in user", function() {
     console.log("Finishing : User created");
   });
 
-   it("User can create new user in color version with pointer size m and pointer color white", function() {
+  it("User can create new user in color version with pointer size m and pointer color white", function() {
     CreateUserPage.CreateUserSettingsRandom();
     CreateUserPage.SelectRadioButton("1");
     CreateUserPage.selectMediumPointer();
@@ -283,7 +279,7 @@ describe("Game menu log in user", function() {
     console.log("Finishing : User created");
   });
 
-   it("User can create new user in color version with pointer size m and pointer color yellow", function() {
+  it("User can create new user in color version with pointer size m and pointer color yellow", function() {
     CreateUserPage.CreateUserSettingsRandom();
     CreateUserPage.SelectRadioButton("1");
     CreateUserPage.selectMediumPointer();
