@@ -26,7 +26,7 @@ export class UserSettingsEditComponent {
       .subscribe(data => this.userSettings = data);
   }
 
-  saveUserSettings() {
+  saveUserSettings(): void {
     this.userSettingsService.saveUserSettingsForUser(this.userName, this.userSettings)
       .subscribe(data => {
         this.alertingService.addSuccess('Корисничките подесувања се успешно зачувани.');

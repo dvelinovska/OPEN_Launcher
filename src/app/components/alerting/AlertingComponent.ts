@@ -1,12 +1,11 @@
 import {Component} from 'angular2/core';
 
 import {AlertingService} from './AlertingService';
-
 import {Alert} from './Alert';
 
 @Component({
-    selector: 'alerts',
-    template: `
+  selector: 'alerts',
+  template: `
         <div *ngIf="hasAlerts()">
             <div *ngFor="#alert of getCurrentAlerts()" class="alert alert-{{alert.type}}">
                 <label id="messagelabel">{{ alert.message }}</label>
@@ -17,17 +16,17 @@ import {Alert} from './Alert';
         </div>`
 })
 export class AlertingComponent {
-    constructor(private alertingService: AlertingService) { }
+  constructor(private alertingService: AlertingService) { }
 
-    getCurrentAlerts(): Alert[] {
-        return this.alertingService.currentAlerts;
-    }
+  getCurrentAlerts(): Alert[] {
+    return this.alertingService.currentAlerts;
+  }
 
-    hasAlerts(): boolean {
-        return this.alertingService.currentAlerts.length > 0;
-    }
+  hasAlerts(): boolean {
+    return this.alertingService.currentAlerts.length > 0;
+  }
 
-    removeAlert(alert: Alert) {
-        this.alertingService.removeAlert(alert);
-    }
+  removeAlert(alert: Alert) {
+    this.alertingService.removeAlert(alert);
+  }
 }

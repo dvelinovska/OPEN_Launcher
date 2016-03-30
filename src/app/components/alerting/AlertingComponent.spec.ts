@@ -1,83 +1,63 @@
 import {
-    beforeEachProviders,
-    describe,
-    expect,
-    it,
-    inject
+  beforeEachProviders,
+  it,
+  inject
 } from 'angular2/testing';
 import {provide} from 'angular2/core';
+
 import {Alert} from './Alert';
 import {AlertingComponent} from './AlertingComponent';
 import {AlertingService} from './AlertingService';
 
 describe('AlertingComponentTests', function() {
-    var instance: AlertingComponent = null;
-    class AlertingServiceMock {
-        currentAlerts: Array<Alert> = new Array<Alert>();
+  beforeEachProviders(() => [
+    provide(AlertingService, { useClass: AlertingService }),
+    AlertingComponent
+  ]);
 
-        addAlert(type: string, message: string) {
-            var alert = new Alert(type, message);
-            this.currentAlerts.push(alert);
-        }
+  it('getCurrentAlerts_shouldBeEqualToAlertingServiceCurrentAlerts',
+    inject([AlertingComponent], (instance) => {
+      // Arrange
+      var expectedResult = instance.alertingService.currentAlerts;
 
-        removeAlert(alert: Alert) {
-            for (var index = 0; index < this.currentAlerts.length; index++) {
-                if (this.currentAlerts[index] === alert) {
-                    this.currentAlerts.splice(index, 1);
-                    break;
-                }
-            }
-        }
-    }
+      // Act
+      var result = instance.getCurrentAlerts();
 
-    beforeEachProviders(() => [
-        provide(AlertingService, { useClass: AlertingServiceMock }),
-        AlertingComponent
-    ]);
+      // Assert
+      expect(result).toEqual(expectedResult);
+    }));
 
-    it('getCurrentAlerts_shouldBeEqualToAlertingServiceCurrentAlerts',
-        inject([AlertingComponent], (instance) => {
-            // Arrange
-            var expectedResult = instance.alertingService.currentAlerts;
+  it('hasAlerts_givenAlertingServiceHasAlerts_shouldReturnTrue',
+    inject([AlertingComponent], (instance) => {
+      // Arrange
+      instance.alertingService.addAlert('info', 'message');
 
-            // Act
-            var result = instance.getCurrentAlerts();
+      // Act
+      var result = instance.hasAlerts();
 
-            // Assert
-            expect(result).toEqual(expectedResult);
-        }));
+      // Assert
+      expect(result).toBeTruthy();
+    }));
 
-    it('hasAlerts_givenAlertingServiceHasAlerts_shouldReturnTrue',
-        inject([AlertingComponent], (instance) => {
-            // Arrange
-            instance.alertingService.addAlert('info', 'message');
+  it('hasAlerts_givenAlertingServiceDoesntHaveAlerts_shouldReturnFalse',
+    inject([AlertingComponent], (instance) => {
+      // Act
+      var result = instance.hasAlerts();
 
-            // Act
-            var result = instance.hasAlerts();
+      // Assert
+      expect(result).toBeFalsy();
+    }));
 
-            // Assert
-            expect(result).toBeTruthy();
-        }));
+  it('removeAlert_givenServiceAlertsHasOneCurrentAlert_shouldRemoveAndCurrentAlertsArrayShouldBeEmpty',
+    inject([AlertingComponent], (instance) => {
+      // Arrange
+      var alert: Alert = new Alert('info', 'message');
+      instance.alertingService.currentAlerts = [alert];
 
-    it('hasAlerts_givenAlertingServiceDoesntHaveAlerts_shouldReturnFalse',
-        inject([AlertingComponent], (instance) => {
-            // Act
-            var result = instance.hasAlerts();
+      // Act
+      instance.removeAlert(alert);
 
-            // Assert
-            expect(result).toBeFalsy();
-        }));
-
-    it('removeAlert_givenServiceAlertsHasOneCurrentAlert_shouldRemoveAndCurrentAlertsArrayShouldBeEmpty',
-        inject([AlertingComponent], (instance) => {
-            // Arrange
-            var alert: Alert = new Alert('info', 'message');
-            instance.alertingService.currentAlerts = [alert];
-
-            // Act    
-            instance.removeAlert(alert);
-
-            // Assert
-            expect(instance.hasAlerts()).toBeFalsy();
-        }));
+      // Assert
+      expect(instance.hasAlerts()).toBeFalsy();
+    }));
 });

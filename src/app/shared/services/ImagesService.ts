@@ -3,9 +3,13 @@ import {Http, Headers} from 'angular2/http';
 import {User} from '../models/User';
 import {GlobalService} from './GlobalService';
 
+export interface IImagesService {
+  getProfileImages(): any;
+  getPointerImages(): any;
+}
 
 @Injectable()
-export class ImagesService {
+export class ImagesService implements IImagesService {
   constructor(private http: Http, private globalService: GlobalService) { }
 
   getProfileImages() {
@@ -15,7 +19,7 @@ export class ImagesService {
       });
   }
 
-    getPointerImages() {
+  getPointerImages() {
     return this.http.get(this.globalService.URL_GETPOINTER_IMAGES)
       .map(res => {
         return res.json();
