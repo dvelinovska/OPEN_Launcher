@@ -45,5 +45,28 @@ describe("Game menu edit user settings", function() {
     expect(UserSettingsEditPage.isMediumPointerSelected()).toBe(true);
   });
 
+  it("User can create new user with default settings", function() {
+    CreateUserPage.CreatePredefinedUserName("Dragica");
+    browser.sleep(1000);
+    LogInPage.FilterUsername("D");
+    LogInPage.FilterUsername("r");
+    LogInPage.FilterUsername("a");
+    LogInPage.FilterUsername("g");
+    LogInPage.FilterUsername("i");
+    LogInPage.FilterUsername("c");
+    LogInPage.FilterUsername("a");
+    UserSettingsEditPage.logInFilteredUser();
+    console.log("user name filtered");
+    UserSettingsEditPage.openUserSettings();
+    console.log("user settings edit open");
+    CreateUserPage.selectMediumPointer();
+    CreateUserPage.selectRedColor();
+    UserSettingsEditPage.userSettingsSave();
+    browser.get("http://localhost:3000/#/login");
+    UserSettingsEditPage.openUserSettings();
+    expect(UserSettingsEditPage.isRedColorSelected()).toBe(true);
+    expect(UserSettingsEditPage.isMediumPointerSelected()).toBe(true);
+  });
+
 
 });
