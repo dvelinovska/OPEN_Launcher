@@ -22,6 +22,9 @@ export class GlobalService {
   URL_SAVE_USERSETTINGS(username: string): string {
     return URL + '/api/saveUserSettings/' + username;
   }
+  URL_IS_EXISTINGUSER(username: string): string {
+    return URL + '/api/isExistingUser/' + username;
+  }
   constructor() { }
 }
 
