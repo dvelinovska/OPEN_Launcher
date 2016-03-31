@@ -15,10 +15,10 @@ describe("Game menu delete user", function() {
 
 
   it("should delete profile and remove it from the profile page and alert to be displayed", function() {
-    DeleteUser.DeleteProfile();
+    DeleteUser.deleteProfile();
     browser.sleep(500);
     browser.ignoreSynchronization = true;
-    expect(DeleteUser.ReturnMessage()).toEqual("Профилот е успешно избришан.");
+    expect(DeleteUser.returnMessage()).toEqual("Профилот е успешно избришан.");
     browser.sleep(500);
     browser.ignoreSynchronization = false;
     console.log("Finishing : Delete profile");
@@ -26,8 +26,8 @@ describe("Game menu delete user", function() {
   });
 
   it("should return to the profile page and alert to be displayed", function() {
-    DeleteUser.CancelDelete();
-    expect(DeleteUser.ReturnMessage()).toEqual("Бришењето е откажано.");
+    DeleteUser.cancelDelete();
+    expect(DeleteUser.returnMessage()).toEqual("Бришењето е откажано.");
     browser.sleep(1500);
     browser.ignoreSynchronization = false;
     console.log("Finishing :Cancel Delete profile");
@@ -36,7 +36,7 @@ describe("Game menu delete user", function() {
 
 
   it("delete button should not be visible if profile is not selected", function() {
-    expect(DeleteUser.IsDeleteBtnIsVisible()).toBe(false);
+    expect(DeleteUser.isDeleteBtnIsVisible()).toBe(false);
     console.log("delete button should not be visible if profile is not selected");
   });
 

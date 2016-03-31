@@ -36,12 +36,7 @@ var CreateUserPage = function() {
     browser.get(value);
   };
 
-
-  this.clickCreateBtn = function() {
-    createBtnFirstPage.click();
-  };
-
-  SelectRandomPicture = function() {
+  selectRandomPicture = function() {
 
     randomNo = Math.floor(Math.random() * (12)) + 1;
     console.log("Random broj: " + randomNo);
@@ -51,11 +46,7 @@ var CreateUserPage = function() {
     console.log("Kliknata slikicka");
   };
 
-  this.clickCreateBtnAfter = function() {
-    createBtnSecondPage.click();
-  };
-
-  AutoGenerateUserName = function() {
+  autoGenerateUserName = function() {
     autoGenerateUserName = "Auto-UserName-";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     for (var i = 0; i < 3; i++) {
@@ -64,8 +55,7 @@ var CreateUserPage = function() {
     enterName.sendKeys(autoGenerateUserName);
   };
 
-  this.CreateUserSettingsRandom = function() {
-    createBtnFirstPage.click();
+  this.createUserSettingsRandom = function() {
     browser.sleep(500);
     browser.ignoreSynchronization = true;
     autoGenerateUserName = "Auto-UserName-";
@@ -74,21 +64,16 @@ var CreateUserPage = function() {
       autoGenerateUserName += possible.charAt(Math.floor(Math.random() * possible.length));
     };
     enterName.sendKeys(autoGenerateUserName);
-    SelectRandomPicture();
+    selectRandomPicture();
   }
 
-  this.CreateAutoGenerateUserName = function() {
-    createBtnFirstPage.click();
-    SelectRandomPicture();
-    AutoGenerateUserName();
+  this.createAutoGenerateUserName = function() {
+    selectRandomPicture();
+    autoGenerateUserName();
     createBtnSecondPage.click();
   };
 
-  this.NumberOfColors = function() {
-    return colors.count();
-  };
-
-  this.SelectRadioButton = function(option) {
+  this.selectRadioButton = function(option) {
     var radioselect = radiobtn.get(option);
     radioselect.getAttribute("innerHTML").then(function(text) {
       var selectedOption = text;
@@ -96,7 +81,6 @@ var CreateUserPage = function() {
       radioselect.click();
     });
   };
-
 
   selectRadioButton = function(option) {
     var radioselect = radiobtn.get(option);
@@ -107,19 +91,16 @@ var CreateUserPage = function() {
     });
   };
 
-  this.CreatePredefinedUserName = function(name) {
-    browser.sleep(500);
-    createBtnFirstPage.click();
+  this.createPredefinedUserName = function(name) {
     browser.sleep(2000);
-    SelectRandomPicture();
+    selectRandomPicture();
     enterName.sendKeys(name);
     createBtnSecondPage.click();
   };
 
-  this.CreatePredefinedUserNameWithUserSettings = function(name) {
-    createBtnFirstPage.click();
+  this.createPredefinedUserNameWithUserSettings = function(name) {
     browser.sleep(2000);
-    SelectRandomPicture();
+    selectRandomPicture();
     enterName.sendKeys(name);
     browser.sleep(500);
     selectRadioButton("0");
@@ -128,13 +109,25 @@ var CreateUserPage = function() {
     createBtnSecondPage.click();
   };
 
+  this.numberOfColors = function() {
+    return colors.count();
+  };
+
+  this.clickCreateBtnAfter = function() {
+    createBtnSecondPage.click();
+  };
+
+  this.clickCreateBtn = function() {
+    createBtnFirstPage.click();
+  };
+
 
   this.writeName = function(name) {
     enterName.sendKeys(name);
   };
 
   this.selectPicture = function() {
-    SelectRandomPicture();
+    selectRandomPicture();
   };
 
   this.checkText = function() {
@@ -146,7 +139,7 @@ var CreateUserPage = function() {
     backBtn.click();
   };
 
-  this.ReturnMessage = function() {
+  this.returnMessage = function() {
     return alertmessage.getText();
 
   };
@@ -155,41 +148,41 @@ var CreateUserPage = function() {
     return createBtnSecondPage.isEnabled();
   };
 
-  this.FilterUsername = function(filter) {
+  this.filterUsername = function(filter) {
     enterName.sendKeys(filter);
 
   };
 
-  this.ClearFilter = function() {
+  this.clearFilter = function() {
     enterName.clear();
   };
 
-  this.GetImageUrl = function() {
+  this.getImageUrl = function() {
     return imageurl;
   };
 
-  this.GetProfileImageUrl = function() {
+  this.getProfileImageUrl = function() {
     return selectedProfileImg.getAttribute('src');
   };
 
-  this.GetCurrentUrl = function() {
+  this.getCurrentURL = function() {
     return browser.getCurrentUrl();
   };
 
-  this.GetEnteredName = function() {
+  this.getEnteredName = function() {
     return enterName.getText();
   };
 
-  this.GetProfileName = function() {
+  this.getProfileName = function() {
     return profileName.getText()
   };
 
-  this.IsRedPresent = function() {
+  this.isRedPresent = function() {
 
     return colorRed.isPresent();
   }
 
-  this.WaitforCreateBtn = function() {
+  this.waitforCreateBtn = function() {
     browser.wait(EC.visibilityOf(createBtnFirstPage), 5000);
   };
 

@@ -2,8 +2,8 @@ var DeleteUser = function() {
 
   var someProfile = element.all(by.className("img-circle")).get(0);
   var deleteBtn = element(by.id("deleteBtn"));
-  var YesBtn = element(by.id("daBtn"));
-  var NoBtn = element(by.id("neBtn"));
+  var yesBtn = element(by.id("daBtn"));
+  var noBtn = element(by.id("neBtn"));
   var modal = element(by.id("myModal"));
   var alertmessage = element(by.id("messagelabel"));
 
@@ -11,39 +11,39 @@ var DeleteUser = function() {
     browser.get(value);
   };
 
-  this.DeleteProfile = function() {
+  this.deleteProfile = function() {
     someProfile.click();
     deleteBtn.click();
     browser.wait(EC.visibilityOf(modal), 5000);
-    YesBtn.click();
+    yesBtn.click();
 
   };
 
-  this.DeleteFilteredUser = function() {
+  this.deleteFilteredUser = function() {
     someProfile.click();
     deleteBtn.click();
     browser.wait(EC.visibilityOf(modal), 5000);
-    YesBtn.click();
+    yesBtn.click();
 
   };
 
   this.deleteBtnIsVisible = function() {
     return deleteBtn.isPresent();
   };
-  this.CancelDelete = function() {
+  this.cancelDelete = function() {
     someProfile.click();
     deleteBtn.click();
     browser.wait(EC.visibilityOf(modal), 5000);
-    NoBtn.click();
+    noBtn.click();
 
   };
 
-  this.IsDeleteBtnIsVisible = function() {
+  this.isDeleteBtnIsVisible = function() {
     return deleteBtn.isPresent();
   };
 
 
-  this.ReturnMessage = function() {
+  this.returnMessage = function() {
     return alertmessage.getText();
   };
 };
