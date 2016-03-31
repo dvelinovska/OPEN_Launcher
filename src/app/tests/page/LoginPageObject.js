@@ -51,6 +51,42 @@ var LogInPage = function() {
 
   }
 
+  this.FilterUsernameDragica = function() {
+    name.sendKeys("D");
+    name.sendKeys("r");
+    name.sendKeys("a");
+    name.sendKeys("g");
+    name.sendKeys("i");
+    name.sendKeys("c");
+    name.sendKeys("a");
+  }
+
+  this.FilterUsernameJosif = function() {
+    name.sendKeys("J");
+    name.sendKeys("o");
+    name.sendKeys("s");
+    name.sendKeys("i");
+    name.sendKeys("f");
+  }
+
+  this.FilterUsernameJosi = function() {
+    name.sendKeys("J");
+    name.sendKeys("o");
+    name.sendKeys("s");
+    name.sendKeys("i");
+  }
+
+  this.FilterUsernameDaniela = function() {
+    name.sendKeys("D");
+    name.sendKeys("a");
+    name.sendKeys("n");
+    name.sendKeys("i");
+    name.sendKeys("e");
+    name.sendKeys("l");
+    name.sendKeys("a");
+
+  }
+
   this.FilterUsernameClear = function(filter) {
     name.clear();
 
