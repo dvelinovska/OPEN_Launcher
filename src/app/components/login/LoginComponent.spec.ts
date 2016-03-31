@@ -1,12 +1,9 @@
 import {
-    beforeEachProviders,
-    describe,
-    expect,
-    it,
-    inject
+  beforeEachProviders,
+  it,
+  inject
 } from 'angular2/testing';
-
-import {provide, Component} from 'angular2/core';
+import {provide} from 'angular2/core';
 import {Observable} from 'rxjs/Rx';
 import {Router} from 'angular2/router';
 
@@ -17,157 +14,126 @@ import {AlertingService} from '../alerting/AlertingService';
 import {LoginComponent} from './LoginComponent';
 import {Alert} from '../alerting/Alert';
 
+import {UserServiceMock} from '../../shared/mocks/UserServiceMock';
+import {RouterMock} from '../../shared/mocks/RouterMock';
+
 describe('LoginComponentTests', function() {
-    var instance: LoginComponent = null;
+  beforeEachProviders(() => [
+    provide(AlertingService, { useClass: AlertingService }),
+    provide(UserService, { useClass: UserServiceMock }),
+    provide(AuthService, { useClass: AuthService }),
+    provide(Router, { useClass: RouterMock }),
+    LoginComponent
+  ]);
 
-    function getTestUser(name: string) {
-        var user = new User();
-        user.name = name;
-        return user;
-    }
+  it('login_givenInvalidUser_shouldSetUnsuccessfulLoginAlertMessage',
+    inject([LoginComponent], (instance) => {
+      // Arrange
+      var user = UserServiceMock.getTestUser('user1');
+      spyOn(instance.authService, 'login').and.callFake(() => { return false; });
+      spyOn(instance.alertingService, 'addDanger').and.callFake(() => { });
+      instance.selectedUser = user;
 
-    class UserServiceMock {
-        deleteUser(name) {
-            var allUsers: User[] = new Array<User>();
-            allUsers[0] = getTestUser('user1');
-            return Observable.of(allUsers);
-        }
+      // Act
+      instance.login();
 
-        getAllUsers(): Observable<User[]> {
-            var allUsers: User[] = new Array<User>();
-            var string1 = '[{"name": "user1"}, {"name": "user2"}]';
-            var obj = JSON.parse(string1);
-            return Observable.of(obj);
-        }
-    }
+      // Assert
+      expect(instance.authService.login).toHaveBeenCalledWith(user.name);
+      expect(instance.alertingService.addDanger).toHaveBeenCalledWith('Корисникот не е валиден.');
+    }));
 
-    class RouterMock {
-        navigate() { }
-    }
+  it('login_givenValidUser_shouldSetSuccessfulLoginAlertMessageAndShouldRedirectToHome',
+    inject([LoginComponent], (instance) => {
+      // Arrange
+      var user = UserServiceMock.getTestUser('user1');
+      spyOn(instance.authService, 'login').and.callFake(function() { return true; });
+      spyOn(instance.router, 'navigate').and.callFake(() => { });
+      instance.selectedUser = user;
 
-    beforeEachProviders(() => [
-        provide(AlertingService, { useClass: AlertingService }),
-        provide(UserService, { useClass: UserServiceMock }),
-        provide(AuthService, { useClass: AuthService }),
-        provide(Router, { useClass: RouterMock }),
-        LoginComponent
-    ]);
+      // Act
+      instance.login();
 
-    it('login_givenInvalidUser_shouldSetUnsuccessfulLoginAlertMessage',
-        inject([LoginComponent], (instance) => {
-            //Arrange
-            var user = getTestUser('user');
-            spyOn(instance.alertingService, 'addDanger').and.callFake(() => { });
-            spyOn(instance.authService, 'login').and.callFake(() => { return false; });
-            instance.selectUser(user);
+      // Assert
+      expect(instance.authService.login).toHaveBeenCalledWith(user.name);
+      expect(instance.router.navigate).toHaveBeenCalledWith(['/Home']);
+    }));
 
-            //Act
-            instance.login();
+  it('deleteUser_givenSelectedUser_shouldDeleteUserResetTheSelectedUserAndSetSuccessAlertMessage',
+    inject([LoginComponent], (instance) => {
+      // Arrange
+      var user = UserServiceMock.getTestUser('user1');
+      instance.selectedUser = user;
+      spyOn(instance.alertingService, 'addSuccess').and.callFake(() => { });
 
-            //Assert
-            expect(instance.authService.login).toHaveBeenCalledWith(user.name);
-            expect(instance.alertingService.addDanger).toHaveBeenCalledWith('Корисникот не е валиден.');
-        }));
+      // Act
+      instance.deleteUser();
 
-    it('login_givenValidUser_shouldSetSuccessfulLoginAlertMessageAndShouldRedirectToHome',
-        inject([LoginComponent], (instance) => {
-            //Arrange
-            var user = getTestUser('user');
-            spyOn(instance.router, 'navigate').and.callFake(() => { });
-            spyOn(instance.authService, 'login').and.callFake(function() { return true; });
-            instance.selectUser(user);
+      // Assert
+      expect(instance.allUsers.length).toEqual(1);
+      expect(instance.selectedUser).not.toEqual(user);
+      expect(instance.alertingService.addSuccess).toHaveBeenCalledWith('Профилот е успешно избришан.');
+    }));
 
-            //Act
-            instance.login();
+  it('deleteCancelled_givenCancelDeletingIsChosen_shouldSetInfoAlertMessage',
+    inject([LoginComponent], (instance) => {
+      // Arrange
+      spyOn(instance.alertingService, 'addInfo').and.callFake(() => { });
 
-            //Assert
-            expect(instance.authService.login).toHaveBeenCalledWith(user.name);
-            expect(instance.router.navigate).toHaveBeenCalledWith(['/Home']);
-        }));
+      // Act
+      instance.deleteCancelled();
 
-    it('deleteUser_givenSelectedUser_shouldDeleteUser',
-        inject([LoginComponent], (instance) => {
-            // Arrange
-            instance.selectedUser = getTestUser('user1');
+      // Assert
+      expect(instance.alertingService.addInfo).toHaveBeenCalledWith('Бришењето е откажано.');
+    }));
 
-            // Act
-            instance.deleteUser();
+  it('selectUser_givenValidUser_shouldSetTheSelectedUser',
+    inject([LoginComponent], (instance) => {
+      // Arrange
+      var user = UserServiceMock.getTestUser('user1');
 
-            // Assert
-            expect(instance.allUsers.length).toEqual(1);
-        }));
+      // Act
+      instance.selectUser(user);
 
-    it('deleteUser_givenSelectedUser_shouldResetTheSelectedUser',
-        inject([LoginComponent], (instance) => {
-            // Arrange
-            var user = getTestUser('user');
-            instance.selectedUser = user;
+      // Assert
+      expect(instance.selectedUser).toEqual(user);
+    }));
 
-            // Act
-            instance.deleteUser();
+  it('shouldApplySelectedUserLayout_givenSelectedUser_shouldReturnTrue',
+    inject([LoginComponent], (instance) => {
+      // Arrange
+      var user = UserServiceMock.getTestUser('user1');
+      instance.selectedUser = user;
 
-            // Assert
-            expect(instance.selectedUser).not.toEqual(user);
-        }));
+      // Act
+      var flag = instance.shouldApplySelectedUserLayout(user);
 
-    it('deleteUser_givenSelectedUser_shouldSetSuccessAlertMessage',
-        inject([LoginComponent], (instance) => {
-            //Arrange
-            spyOn(instance.alertingService, 'addSuccess').and.callFake(() => { });
+      // Assert
+      expect(flag).toBeTruthy();
+    }));
 
-            // Act
-            instance.deleteUser();
+  it('shouldApplySelectedUserLayout_givenDifferentUser_shouldReturnFalse',
+    inject([LoginComponent], (instance) => {
+      // Arrange
+      var selectedUser = UserServiceMock.getTestUser('user1');
+      var user = UserServiceMock.getTestUser('user2');
+      instance.selectedUser = selectedUser;
 
-            // Assert
-            expect(instance.alertingService.addSuccess).toHaveBeenCalledWith('Профилот е успешно избришан.');
-        }));
+      // Act
+      var flag = instance.shouldApplySelectedUserLayout(user);
 
-    it('deleteCancelled_givenCancelDeletingIsChosen_shouldSetInfoAlertMessage',
-        inject([LoginComponent], (instance) => {
-            //Arrange
-            spyOn(instance.alertingService, 'addInfo').and.callFake(() => { });
+      // Assert
+      expect(flag).toBeFalsy();
+    }));
 
-            // Act
-            instance.deleteCancelled();
+  it('getAllUsers_givenAvailableUserService_shouldReturnAllUsers',
+    inject([LoginComponent], (instance) => {
+      // Arrange
+      var localUsers = [{ 'name': 'user1' }, { 'name': 'user2' }];
 
-            // Assert
-            expect(instance.alertingService.addInfo).toHaveBeenCalledWith('Бришењето е откажано.');
-        }));
+      // Act
+      instance.getAllUsers();
 
-    it('selectUser_givenValidUser_shouldSetTheSelectedUser',
-        inject([LoginComponent], (instance) => {
-            // Arrange
-            var user = getTestUser('user');
-
-            // Act
-            instance.selectUser(user);
-
-            // Assert
-            expect(instance.selectedUser).toEqual(user);
-        }));
-
-    it('shouldApplySelectedUserLayout_givenSelectedUser_shouldReturnTrue',
-        inject([LoginComponent], (instance) => {
-            // Arrange
-            var user = getTestUser('user');
-
-            // Act
-            instance.selectedUser = user;
-            var flag = instance.shouldApplySelectedUserLayout(user);
-
-            // Assert
-            expect(flag).toBeTruthy();
-        }));
-
-    it('getAllUsers_givenAvailableUserService_shouldReturnAllUsers',
-        inject([LoginComponent], (instance) => {
-            // Arrange
-            var localUsers = [{ 'name': 'user1' }, { 'name': 'user2' }];
-
-            // Act
-            instance.getAllUsers();
-
-            // Assert
-            expect(instance.allUsers).toEqual(localUsers);
-        }));
+      // Assert
+      expect(instance.allUsers).toEqual(localUsers);
+    }));
 });

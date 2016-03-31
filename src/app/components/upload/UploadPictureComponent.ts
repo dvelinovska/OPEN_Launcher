@@ -19,8 +19,7 @@ export class UploadPictureComponent {
   public selectedFiles;
   public selectedImage: string;
 
-  constructor(private uploadPictureService: UploadPictureService) {
-  }
+  constructor(private uploadPictureService: UploadPictureService) { }
 
   uploadFile(): void {
     this.uploadPictureService.upload(this.selectedFiles[0]);
@@ -28,7 +27,7 @@ export class UploadPictureComponent {
     this.selectedFiles = null;
   }
 
-  onChange(event) {
+  onChange(event): void {
     this.selectedFiles = event.srcElement.files;
     this.selectedImage = this.selectedFiles[0].name;
   }
