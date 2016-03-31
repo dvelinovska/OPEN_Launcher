@@ -2,7 +2,7 @@ var UploadPage = function() {
 
   var path = require("path");
   var elm = element(by.css('input[type="file"]'));
-  var fileToUpload = "E:/Images/userPhoto-1457963151676.jpg";
+  var fileToUpload = "U:/krava.jpg";
   var absolutePath = path.resolve(__dirname, fileToUpload);
   var signBtn = element(by.id("btn-login"));
   var navigateToUpload = element(by.id("navBarUpload"));
@@ -14,7 +14,7 @@ var UploadPage = function() {
   var choosePicture = element(by.css("body > app > div > upload-picture > div > div > div > div > div > input"));
   var pathFiled = element(by.css("body > app > div > upload-picture > div > div > div > div > input.form-control"));
 
-  this.UploadPicture = function() {
+  this.uploadPicture = function() {
     navigateToUpload.click();
     console.log("Navigated to upload page");
     //make it visible
@@ -25,15 +25,15 @@ var UploadPage = function() {
     console.log("Picture uploaded");
   };
 
-  this.ReturnMessage = function() {
+  this.returnMessage = function() {
     return alertmessage.getText();
   };
 
-  this.NavigateToHomePage = function() {
+  this.navigateToHomePage = function() {
     navigateToHome.click();
   };
 
-  this.NavigateToUploadPage = function() {
+  this.navigateToUploadPage = function() {
     navigateToUpload.click();
   }
 
@@ -41,7 +41,7 @@ var UploadPage = function() {
     return browser.getCurrentUrl();
   };
 
-  this.NavigateToLogInPage = function() {
+  this.navigateToLogInPage = function() {
     navigateHome.click();
   }
 

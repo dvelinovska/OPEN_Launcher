@@ -10,14 +10,16 @@ describe("Game menu edit user settings", function() {
   beforeEach(function() {
     console.log(" Before Method : Before Each Function");
     UserSettingsEditPage.get("http://localhost:3000/#/login");
-    browser.sleep(1000);
+    browser.sleep(2000);
+    CreateUserPage.clickCreateBtn();
+    browser.sleep(500);
 
   });
 
   it("User can create new user with default settings", function() {
-    CreateUserPage.CreatePredefinedUserName("Josi");
+    CreateUserPage.createPredefinedUserName("Josif");
     browser.sleep(1000);
-    LogInPage.FilterUsernameJosi();
+    LogInPage.filterUsernameJosif();
     UserSettingsEditPage.logInFilteredUser();
     console.log("user name filtered");
     UserSettingsEditPage.openUserSettings();
@@ -25,15 +27,15 @@ describe("Game menu edit user settings", function() {
     expect(UserSettingsEditPage.isWhiteColorSelected()).toBe(true);
     expect(UserSettingsEditPage.isSmallPointerSelected()).toBe(true);
     browser.get("http://localhost:3000/#/login");
-    LogInPage.FilterUsernameJosi();
-    DeleteUser.DeleteFilteredUser();
+    LogInPage.filterUsernameJosif();
+    DeleteUser.deleteFilteredUser();
 
   });
 
   it("User can create new user with pointer size m and pointer color red", function() {
-    CreateUserPage.CreatePredefinedUserNameWithUserSettings("Daniela");
+    CreateUserPage.createPredefinedUserNameWithUserSettings("Josif");
     browser.sleep(1000);
-    LogInPage.FilterUsernameDaniela();
+    LogInPage.filterUsernameJosif();
     browser.sleep(1000);
     UserSettingsEditPage.logInFilteredUser();
     console.log("user name filtered");
@@ -42,14 +44,14 @@ describe("Game menu edit user settings", function() {
     expect(UserSettingsEditPage.isRedColorSelected()).toBe(true);
     expect(UserSettingsEditPage.isMediumPointerSelected()).toBe(true);
     browser.get("http://localhost:3000/#/login");
-    LogInPage.FilterUsernameDaniela();
-    DeleteUser.DeleteFilteredUser();
+    LogInPage.filterUsernameJosif();
+    DeleteUser.deleteFilteredUser();
   });
 
   it("User can create new user with default settings and change them", function() {
-    CreateUserPage.CreatePredefinedUserName("Dragica");
+    CreateUserPage.createPredefinedUserName("Josif");
     browser.sleep(1000);
-    LogInPage.FilterUsernameDragica();
+    LogInPage.filterUsernameJosif();
     UserSettingsEditPage.logInFilteredUser();
     console.log("user name filtered");
     UserSettingsEditPage.openUserSettings();
@@ -62,8 +64,8 @@ describe("Game menu edit user settings", function() {
     expect(UserSettingsEditPage.isRedColorSelected()).toBe(true);
     expect(UserSettingsEditPage.isMediumPointerSelected()).toBe(true);
     browser.get("http://localhost:3000/#/login");
-    LogInPage.FilterUsernameDragica();
-    DeleteUser.DeleteFilteredUser();
+    LogInPage.filterUsernameJosif();
+    DeleteUser.deleteFilteredUser();
   });
 
 
