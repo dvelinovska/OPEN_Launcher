@@ -23,7 +23,7 @@ export class UserValidationService {
   }
 
   isUserPictureSet(user: User): boolean {
-    return user.profileImg !== './assets/images/avatars/default.jpg'
+    return user.profileImg !== './assets/images/avatars/default.jpg';
   }
 
   isValidUserData(user: User): boolean {
@@ -33,7 +33,7 @@ export class UserValidationService {
       && user.userSettings.backgroundColor >= 0
       && user.userSettings.pointerColor >= 0
       && user.userSettings.pointerSize >= 0
-      && user.userSettings.pointerType >= 0
+      && user.userSettings.pointerType >= 0;
   }
 
   isExistingUser(username: string): any {
@@ -53,7 +53,7 @@ export class UserValidationService {
   getExistingUserValidationResponse(username: string): Observable<ValidationResponse> {
     return this.isExistingUser(username)
       .map(res => {
-        var isExisting: boolean = JSON.parse(res.json())
+        var isExisting: boolean = JSON.parse(res.json());
         var response = new ValidationResponse(!isExisting);
 
         if (isExisting) {
