@@ -7,6 +7,7 @@ import {UserSettings} from '../models/UserSettings';
 
 export interface IUserSettingsService {
   getUserSettingsFor(username: string): Observable<UserSettings>;
+  saveUserSettingsForUser(username: string, userSettings: UserSettings): Observable<UserSettings>;
 }
 
 @Injectable()
@@ -21,7 +22,7 @@ export class UserSettingsService implements IUserSettingsService {
       });
   }
 
-  saveUserSettingsForUser(username: string, userSettings: UserSettings) {
+  saveUserSettingsForUser(username: string, userSettings: UserSettings): Observable<UserSettings> {
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
 

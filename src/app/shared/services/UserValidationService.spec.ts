@@ -1,8 +1,8 @@
 import {
-    it,
-    inject,
-    describe,
-    beforeEachProviders
+  it,
+  inject,
+  describe,
+  beforeEachProviders
 } from 'angular2/testing';
 
 import {HTTP_PROVIDERS} from 'angular2/http';
@@ -16,36 +16,36 @@ import {User} from '../models/User';
 import {PointerType, PointerSize, PointerColor, BackgroundColor} from '../enums/UserSettingsEnums';
 
 describe('UserValidationServiceTests', function() {
-    var instance: UserValidationService = null;
+  var instance: UserValidationService = null;
 
-    function getValidUser() {
-        var result = new User();
-        result.name = 'testName';
-        result.profileImg = 'someProfileImage';
-        result.userSettings.backgroundColor = BackgroundColor.InColor;
-        result.userSettings.pointerColor = PointerColor.White;
-        result.userSettings.pointerSize = PointerSize.Small;
-        result.userSettings.pointerType = PointerType.Hand;
-        return result;
-    }
+  function getValidUser() {
+    var result = new User();
+    result.name = 'testName';
+    result.profileImg = 'someProfileImage';
+    result.userSettings.backgroundColor = BackgroundColor.InColor;
+    result.userSettings.pointerColor = PointerColor.White;
+    result.userSettings.pointerSize = PointerSize.Small;
+    result.userSettings.pointerType = PointerType.Hand;
+    return result;
+  }
 
-   beforeEachProviders(() => [
-        BaseRequestOptions,
-        MockBackend,
-        provide(Http, {
-            useFactory: function(backend, defaultOptions) {
-                return new Http(backend, defaultOptions);
-            },
-            deps: [MockBackend, BaseRequestOptions]
-        }),
+  beforeEachProviders(() => [
+    BaseRequestOptions,
+    MockBackend,
+    provide(Http, {
+      useFactory: function(backend, defaultOptions) {
+        return new Http(backend, defaultOptions);
+      },
+      deps: [MockBackend, BaseRequestOptions]
+    }),
 
-        GlobalService,
-        UserValidationService
-    ]);
+    GlobalService,
+    UserValidationService
+  ]);
 
   it('should have http', inject([UserValidationService], (userValidationService) => {
-        expect(!!userValidationService.http).toEqual(true);
-    }));
+    expect(!!userValidationService.http).toEqual(true);
+  }));
 
   // it('isValid_givenInvalidEmptyUser_shouldReturnErrorMessage',
   //  inject([UserValidationService, MockBackend], (userSettingsService: UserValidationService, mockBackend) => {
@@ -127,11 +127,10 @@ describe('UserValidationServiceTests', function() {
   //       expect('').toEqual(result);
   //   });
 
-    //isExistingUser
+  //isExistingUser
 
-     it('isExistingUser_givenValidUsername_shouldBeFalsy',
-        inject([UserValidationService, MockBackend], (userSettingsService: UserValidationService, mockBackend) => {
-            // Arrange
- }));
-
+  it('isExistingUser_givenValidUsername_shouldBeFalsy',
+    inject([UserValidationService, MockBackend], (userSettingsService: UserValidationService, mockBackend) => {
+      // Arrange
+    }));
 });

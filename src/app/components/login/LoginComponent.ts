@@ -23,6 +23,7 @@ export class LoginComponent {
     private userService: UserService,
     private authService: AuthService,
     private router: Router) {
+
     this.getAllUsers();
   }
 

@@ -6,6 +6,10 @@ import {GlobalService} from './GlobalService';
 import {User} from '../models/User';
 import {ValidationResponse} from '../models/ValidationResponse';
 
+export interface IUserValidationService {
+  isValid(user: User): string;
+}
+
 @Injectable()
 export class UserValidationService {
   constructor(private http: Http, private globalService: GlobalService) { }
@@ -62,7 +66,6 @@ export class UserValidationService {
         return response;
       });
   }
-
 }
 
 export var userValidationServiceInjectables: Array<any> = [

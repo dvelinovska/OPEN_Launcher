@@ -41,18 +41,18 @@ export class RegisterComponent {
     this.getAvailableImages();
   }
 
-  getAvailableImages() {
+  getAvailableImages(): void {
     this.imagesService.getProfileImages()
       .subscribe(
       data => this.allImages = data,
       err => this.alertingService.addDanger(err.toString()));
   }
 
-  onSelect(img: string) {
+  onSelect(img: string): void {
     this.user.profileImg = img;
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.userValidationService.isValid(this.user)
       .subscribe(validationResponse => {
         if (!validationResponse.isValid) {

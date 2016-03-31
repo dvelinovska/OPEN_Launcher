@@ -1,7 +1,14 @@
 import {Injectable, provide} from 'angular2/core';
 
+export interface IAuthService {
+  login(user: string): boolean;
+  logout(): void;
+  getUser(): any;
+  isLogged(): boolean;
+}
+
 @Injectable()
-export class AuthService {
+export class AuthService implements IAuthService {
   login(user: string): boolean {
     if (user.length > 0) {
       localStorage.setItem('username', user);
@@ -11,7 +18,7 @@ export class AuthService {
     }
   }
 
-  logout(): any {
+  logout(): void {
     localStorage.removeItem('username');
   }
 

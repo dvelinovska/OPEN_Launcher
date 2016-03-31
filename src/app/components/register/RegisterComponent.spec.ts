@@ -6,6 +6,7 @@ import {
   it,
   inject
 } from 'angular2/testing';
+
 import {HTTP_PROVIDERS} from 'angular2/http';
 import {provide, Component} from 'angular2/core';
 import {FormBuilder} from 'angular2/common';
@@ -20,6 +21,10 @@ import {UserValidationService} from '../../shared/services/UserValidationService
 import {AlertingService} from '../alerting/AlertingService';
 import {RegisterComponent} from './RegisterComponent';
 import {Alert} from '../alerting/Alert';
+
+import {UserServiceMock} from '../../shared/mocks/UserServiceMock';
+import {RouterMock} from '../../shared/mocks/RouterMock';
+import {ImagesServiceMock} from '../../shared/mocks/ImagesServiceMock';
 
 describe('RegisterComponentTests', function() {
   var instance: RegisterComponent = null;
@@ -110,11 +115,6 @@ describe('RegisterComponentTests', function() {
       spyOn(instance.alertingService, 'addSuccess').and.callFake(() => { });
       spyOn(instance.userValidationService, 'isExistingUser').and.callFake(() => { return false; });
       spyOn(instance.userValidationService, 'isValid').and.callFake(() => { return ''; });
-
-      //  spyOn(instance.userValidationService, 'isValid').and.callFake(function(user) {
-      //         var response: Users = new Users(getAllUsers(user));
-      //         return Observable.of({ users: response.users });
-      //       });
       spyOn(instance.userService, 'addUser').and.callFake(function(user) {
         var response: Users = new Users(getAllUsers(user));
         return Observable.of({ users: response.users });
@@ -122,7 +122,6 @@ describe('RegisterComponentTests', function() {
 
       let user: User = new User();
       instance.user = setUser(user);
-
       // Act
       instance.onSubmit();
 
@@ -146,7 +145,6 @@ describe('RegisterComponentTests', function() {
 
       let user: User = new User();
       instance.user = setUser(user);
-
       // Act
       instance.onSubmit();
 

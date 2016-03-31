@@ -10,22 +10,26 @@ export class GlobalService {
   URL_GETPROFILE_IMAGES: string = URL + '/api/GetProfileImages/';
   URL_GETPOINTER_IMAGES: string = URL + '/api/GetPointerImages/';
 
+  constructor() { }
+
   URL_GETUSER(username: string): string {
     return URL + '/api/getAllUsers/' + username;
   }
+
   URL_DELETEUSER(username: string): string {
     return URL + '/api/deleteUser/' + username;
   }
+
   URL_GET_USERSETTINGS(username: string): string {
     return URL + '/api/getUserSettings/' + username;
   }
+
   URL_SAVE_USERSETTINGS(username: string): string {
     return URL + '/api/saveUserSettings/' + username;
   }
   URL_IS_EXISTINGUSER(username: string): string {
     return URL + '/api/isExistingUser/' + username;
   }
-  constructor() { }
 }
 
 export var globalServiceInjectables: Array<any> = [
