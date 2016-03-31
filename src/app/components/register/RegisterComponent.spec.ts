@@ -22,27 +22,27 @@ import {ImagesServiceMock} from '../../shared/mocks/ImagesServiceMock';
 
 describe('RegisterComponentTests', function() {
   beforeEachProviders(() => [
-    provide(AlertingService, { useClass: AlertingService }),
+    AlertingService,
+    UserValidationService,
     provide(ImagesService, { useClass: ImagesServiceMock }),
     provide(UserService, { useClass: UserServiceMock }),
-    provide(UserValidationService, { useClass: UserValidationService }),
     provide(Router, { useClass: RouterMock }),
     FormBuilder,
     RegisterComponent
   ]);
 
-  it('getAvailableImages_givenImagesServiceIsAvailable_shouldReturnJSONOfImagesFiles',
+  it('setAvailableImages_givenImagesServiceIsAvailable_shouldReturnJSONOfImagesFiles',
     inject([RegisterComponent], (instance) => {
       // Arrange
       var allImagesLocal = ['./app/assets/images/avatars/default.jpg', './app/assets/images/avatars/devojce.png'];
       spyOn(instance.imagesService, 'getProfileImages').and.callThrough();
 
       // Act
-      instance.getAvailableImages();
+      instance.setAvailableImages();
 
       // Assert
-      expect(instance.allImages).toEqual(allImagesLocal);
       expect(instance.imagesService.getProfileImages).toHaveBeenCalled();
+      expect(instance.allImages).toEqual(allImagesLocal);
     }));
 
   it('onSelect_givenSelectedImagePath_shouldSetProfileImg',
@@ -79,6 +79,7 @@ describe('RegisterComponentTests', function() {
       // Arrange
       let user: User = UserServiceMock.getTestUser('user');
       instance.user = user;
+      spyOn(instance.router, 'navigate').and.callThrough();
       spyOn(instance.alertingService, 'addDanger').and.callFake(() => { });
       spyOn(instance.userService, 'addUser').and.callFake(function(user) {
         return Observable.of({ users: new Array<User>(), message: 'Name exists' });
@@ -89,22 +90,27 @@ describe('RegisterComponentTests', function() {
 
       // Assert
       expect(instance.userService.addUser).toHaveBeenCalledWith(user);
+      expect(instance.router.navigate).not.toHaveBeenCalledWith(['/Login']);
       expect(instance.alertingService.addDanger).toHaveBeenCalledWith('Корисничкото име веќе постои, обидете се да се регистрирате со друго име');
     }));
 
   it('onSubmit_givenDefaultPicSelected_ShouldNotAddAndShouldReturnAllUsersWithWrittenMessage',
     inject([RegisterComponent], (instance) => {
       // Arrange
-      spyOn(instance.alertingService, 'addDanger').and.callFake(() => { });
       let user: User = new User();
       user.name = 'eljesa';
       user.profileImg = './assets/images/avatars/default.jpg';
       instance.user = user;
+      spyOn(instance.alertingService, 'addDanger').and.callFake(() => { });
+      spyOn(instance.router, 'navigate').and.callThrough();
+      spyOn(instance.userService, 'addUser').and.callFake(() => { });
 
       // Act
       instance.onSubmit();
 
       // Assert
+      expect(instance.userService.addUser).not.toHaveBeenCalledWith(user);
+      expect(instance.router.navigate).not.toHaveBeenCalledWith(['/Login']);
       expect(instance.alertingService.addDanger).toHaveBeenCalledWith('За да креирате профил, ве молам изберете слика');
     }));
 });

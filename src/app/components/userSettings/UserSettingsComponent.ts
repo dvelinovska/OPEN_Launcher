@@ -30,10 +30,10 @@ export class UserSettingsComponent implements OnChanges {
     private pointerColorService: UserSettingsColorsService,
     private imagesService: ImagesService) {
 
-    this.getAvailableImages();
+    this.setAvailableImages();
   }
 
-  getAvailableImages(): void {
+  setAvailableImages(): void {
     this.imagesService.getPointerImages()
       .subscribe(
       data => this.allPointerImages = data,
