@@ -5,14 +5,14 @@ import {
 
 import {AlertingService} from './AlertingService';
 
-describe('AlertingServiceTests', function() {
+describe('AlertingServiceTests', () => {
   var instance: AlertingService = null;
 
-  beforeEach(function() {
+  beforeEach(() => {
     instance = new AlertingService();
   });
 
-  it('addAlert_givenAlert_currentAlertsLengthShouldBeEqualToOne', function() {
+  it('addAlert_givenAlert_currentAlertsLengthShouldBeEqualToOne', () => {
     // Act
     instance.addAlert('type', 'message');
 
@@ -20,7 +20,7 @@ describe('AlertingServiceTests', function() {
     expect(instance.currentAlerts.length).toEqual(1);
   });
 
-  it('addSuccess_givenAlertAndCurrentAlertsArrayIsEmpty_typeOfTheAddedAlertShouldBeSuccess', function() {
+  it('addSuccess_givenAlertAndCurrentAlertsArrayIsEmpty_typeOfTheAddedAlertShouldBeSuccess', () => {
     // Act
     instance.addSuccess('message');
 
@@ -28,7 +28,7 @@ describe('AlertingServiceTests', function() {
     expect(instance.currentAlerts[0].type).toEqual('success');
   });
 
-  it('addInfo_givenAlertAndCurrentAlertsArrayIsEmpty_typeOfTheAddedAlertShouldBeInfo', function() {
+  it('addInfo_givenAlertAndCurrentAlertsArrayIsEmpty_typeOfTheAddedAlertShouldBeInfo', () => {
     // Act
     instance.addInfo('message');
 
@@ -36,7 +36,7 @@ describe('AlertingServiceTests', function() {
     expect(instance.currentAlerts[0].type).toEqual('info');
   });
 
-  it('addWarning_givenAlertAndCurrentAlertsArrayIsEmpty_typeOfTheAddedAlertShouldBeWarning', function() {
+  it('addWarning_givenAlertAndCurrentAlertsArrayIsEmpty_typeOfTheAddedAlertShouldBeWarning', () => {
     // Act
     instance.addWarning('message');
 
@@ -44,7 +44,7 @@ describe('AlertingServiceTests', function() {
     expect(instance.currentAlerts[0].type).toEqual('warning');
   });
 
-  it('addDanger_givenAlertAndCurrentAlertsArrayIsEmpty_TypeOfTheAddedAlertShouldBeDanger', function() {
+  it('addDanger_givenAlertAndCurrentAlertsArrayIsEmpty_TypeOfTheAddedAlertShouldBeDanger', () => {
     // Act
     instance.addDanger('message');
 
@@ -52,7 +52,7 @@ describe('AlertingServiceTests', function() {
     expect(instance.currentAlerts[0].type).toEqual('danger');
   });
 
-  it('removeAlert_givenCurrentAlertsArrayHasOneAlert_shouldRemoveAndCurrentAlertsArrayShouldBeEmpty', function() {
+  it('removeAlert_givenCurrentAlertsArrayHasOneAlert_shouldRemoveAndCurrentAlertsArrayShouldBeEmpty', () => {
     // Arrange
     instance.addDanger('message');
     var noAlerts = instance.currentAlerts.length;

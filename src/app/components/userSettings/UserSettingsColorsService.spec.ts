@@ -6,28 +6,26 @@ import {
 import {UserSettingsColorsService} from './UserSettingsColorsService';
 import {PointerColor, BackgroundColor} from '../../shared/enums/UserSettingsEnums';
 
-describe('UserSettingsColorsServiceTests', function() {
+describe('UserSettingsColorsServiceTests', () => {
   var instance: UserSettingsColorsService = null;
 
-  beforeEach(function() {
+  beforeEach(() => {
     instance = new UserSettingsColorsService();
   });
 
-  it('getPointerColors_givenBlackAndWhiteBgColor_getsWhiteAndYellowPointer',
-    function() {
-      // Act
-      var pointerColors = instance.getPointerColors(BackgroundColor.BlackAndWhite);
+  it('getPointerColors_givenBlackAndWhiteBgColor_getsWhiteAndYellowPointer', () => {
+    // Act
+    var pointerColors = instance.getPointerColors(BackgroundColor.BlackAndWhite);
 
-      // Assert
-      expect(pointerColors.length).toEqual(2);
-    });
+    // Assert
+    expect(pointerColors.length).toEqual(2);
+  });
 
-  it('getPointerColors_givenInColorBgColor_getsAllColorsAvailableFromEnums',
-    function() {
-      // Act
-      var inColorAvailablePointerColor = instance.getPointerColors(BackgroundColor.InColor);
+  it('getPointerColors_givenInColorBgColor_getsAllColorsAvailableFromEnums', () => {
+    // Act
+    var inColorAvailablePointerColor = instance.getPointerColors(BackgroundColor.InColor);
 
-      // Assert
-      expect(inColorAvailablePointerColor.length).toEqual(5);
-    });
+    // Assert
+    expect(inColorAvailablePointerColor.length).toEqual(5);
+  });
 });

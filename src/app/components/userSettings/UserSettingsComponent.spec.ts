@@ -18,7 +18,7 @@ import {UserSettings} from '../../shared/models/UserSettings';
 
 import {ImagesServiceMock} from '../../shared/mocks/ImagesServiceMock';
 
-describe('UserSettingsComponentTests', function() {
+describe('UserSettingsComponentTests', () => {
   beforeEachProviders(() => [
     AlertingService,
     UserSettingsColorsService,

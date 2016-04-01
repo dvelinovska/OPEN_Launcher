@@ -2,7 +2,7 @@ import {UserValidationService} from './UserValidationService';
 import {User} from '../models/User';
 import {PointerType, PointerSize, PointerColor, BackgroundColor} from '../enums/UserSettingsEnums';
 
-describe('UserValidationServiceTests', function() {
+describe('UserValidationServiceTests', () => {
   var instance: UserValidationService = null;
 
   function getValidUser() {
@@ -20,7 +20,7 @@ describe('UserValidationServiceTests', function() {
     instance = new UserValidationService();
   });
 
-  it('isValid_givenInvalidEmptyUser_shouldReturnErrorMessage', function() {
+  it('isValid_givenInvalidEmptyUser_shouldReturnErrorMessage', () => {
     // Arrange
     var user: User = new User();
 
@@ -31,7 +31,7 @@ describe('UserValidationServiceTests', function() {
     expect('Не се сите полиња пополнети.').toEqual(result);
   });
 
-  it('isValid_givenInvalidUserWithName_shouldReturnErrorMessage', function() {
+  it('isValid_givenInvalidUserWithName_shouldReturnErrorMessage', () => {
     // Arrange
     var user: User = new User();
     user.name = 'testName';
@@ -43,7 +43,7 @@ describe('UserValidationServiceTests', function() {
     expect('Не се сите полиња пополнети.').toEqual(result);
   });
 
-  it('isValid_givenValidUserWithTheDefaultPicture_shouldReturnErrorMessage', function() {
+  it('isValid_givenValidUserWithTheDefaultPicture_shouldReturnErrorMessage', () => {
     // Arrange
     var user: User = getValidUser();
     user.profileImg = './assets/images/avatars/default.jpg';
@@ -54,7 +54,7 @@ describe('UserValidationServiceTests', function() {
     expect('За да креирате профил, ве молам изберете слика').toEqual(result);
   });
 
-  it('isValid_givenValidUser_shouldReturnEmptyMessage', function() {
+  it('isValid_givenValidUser_shouldReturnEmptyMessage', () => {
     // Arrange
     var user: User = getValidUser();
 
@@ -65,7 +65,7 @@ describe('UserValidationServiceTests', function() {
     expect('').toEqual(result);
   });
 
-  it('isValid_givenValidUserWithDefaultUserSettings_shouldReturnEmptyMessage', function() {
+  it('isValid_givenValidUserWithDefaultUserSettings_shouldReturnEmptyMessage', () => {
     // Arrange
     var user: User = new User();
     user.name = 'smth';

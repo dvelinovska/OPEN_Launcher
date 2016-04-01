@@ -20,7 +20,7 @@ import {UserServiceMock} from '../../shared/mocks/UserServiceMock';
 import {RouterMock} from '../../shared/mocks/RouterMock';
 import {ImagesServiceMock} from '../../shared/mocks/ImagesServiceMock';
 
-describe('RegisterComponentTests', function() {
+describe('RegisterComponentTests', () => {
   beforeEachProviders(() => [
     AlertingService,
     UserValidationService,
@@ -61,7 +61,7 @@ describe('RegisterComponentTests', function() {
       instance.user = user;
       spyOn(instance.router, 'navigate').and.callThrough();
       spyOn(instance.alertingService, 'addSuccess').and.callFake(() => { });
-      spyOn(instance.userService, 'addUser').and.callFake(function(user) {
+      spyOn(instance.userService, 'addUser').and.callFake((user) => {
         return Observable.of({ users: new Array<User>(), message: '' });
       });
 
@@ -81,7 +81,7 @@ describe('RegisterComponentTests', function() {
       instance.user = user;
       spyOn(instance.router, 'navigate').and.callThrough();
       spyOn(instance.alertingService, 'addDanger').and.callFake(() => { });
-      spyOn(instance.userService, 'addUser').and.callFake(function(user) {
+      spyOn(instance.userService, 'addUser').and.callFake((user) => {
         return Observable.of({ users: new Array<User>(), message: 'Name exists' });
       });
 

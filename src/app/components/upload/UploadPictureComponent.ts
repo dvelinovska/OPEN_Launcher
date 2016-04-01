@@ -16,19 +16,23 @@ import {UploadPictureService} from './UploadPictureService';
   }
 )
 export class UploadPictureComponent {
-  public selectedFiles;
+  public selectedFiles: File[];
   public selectedImage: string;
 
   constructor(private uploadPictureService: UploadPictureService) { }
 
   uploadFile(): void {
     this.uploadPictureService.upload(this.selectedFiles[0]);
-    this.selectedImage = '';
-    this.selectedFiles = null;
+    this.resetSelected();
   }
 
   onChange(event): void {
     this.selectedFiles = event.srcElement.files;
     this.selectedImage = this.selectedFiles[0].name;
+  }
+
+  resetSelected() {
+    this.selectedImage = '';
+    this.selectedFiles = null;
   }
 }

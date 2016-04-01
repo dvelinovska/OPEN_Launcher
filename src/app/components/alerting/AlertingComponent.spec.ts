@@ -9,7 +9,7 @@ import {Alert} from './Alert';
 import {AlertingComponent} from './AlertingComponent';
 import {AlertingService} from './AlertingService';
 
-describe('AlertingComponentTests', function() {
+describe('AlertingComponentTests', () => {
   beforeEachProviders(() => [
     AlertingService,
     AlertingComponent

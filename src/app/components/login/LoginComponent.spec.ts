@@ -17,7 +17,7 @@ import {Alert} from '../alerting/Alert';
 import {UserServiceMock} from '../../shared/mocks/UserServiceMock';
 import {RouterMock} from '../../shared/mocks/RouterMock';
 
-describe('LoginComponentTests', function() {
+describe('LoginComponentTests', () => {
   beforeEachProviders(() => [
     AlertingService,
     AuthService,
@@ -62,7 +62,7 @@ describe('LoginComponentTests', function() {
     inject([LoginComponent], (instance) => {
       // Arrange
       var user = UserServiceMock.getTestUser('user1');
-      spyOn(instance.authService, 'login').and.callFake(function() { return true; });
+      spyOn(instance.authService, 'login').and.callFake(() => { return true; });
       spyOn(instance.router, 'navigate').and.callFake(() => { });
       instance.selectedUser = user;
 
