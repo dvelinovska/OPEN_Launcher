@@ -7,11 +7,11 @@ import {User} from '../models/User';
 import {ValidationResponse} from '../models/ValidationResponse';
 
 export interface IUserValidationService {
-  isValid(user: User): string;
+  isValid(user: User): Observable<ValidationResponse>;
 }
 
 @Injectable()
-export class UserValidationService {
+export class UserValidationService implements IUserValidationService {
   constructor(private http: Http, private globalService: GlobalService) { }
 
   isValid(user: User): Observable<ValidationResponse> {
@@ -40,7 +40,7 @@ export class UserValidationService {
       && user.userSettings.pointerType >= 0;
   }
 
-  isExistingUser(username: string): any{
+  isExistingUser(username: string): any {
     return this.http.get(this.globalService.URL_IS_EXISTINGUSER(username));
   }
 
