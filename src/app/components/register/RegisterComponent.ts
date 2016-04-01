@@ -38,10 +38,10 @@ export class RegisterComponent {
       'name': ['', Validators.required]
     });
 
-    this.getAvailableImages();
+    this.setAvailableImages();
   }
 
-  getAvailableImages(): void {
+  setAvailableImages(): void {
     this.imagesService.getProfileImages()
       .subscribe(
       data => this.allImages = data,

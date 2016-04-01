@@ -24,10 +24,10 @@ export class LoginComponent {
     private authService: AuthService,
     private router: Router) {
 
-    this.getAllUsers();
+    this.setAllUsers();
   }
 
-  getAllUsers(): void {
+  setAllUsers(): void {
     this.userService.getAllUsers()
       .subscribe(data => this.allUsers = data, err => this.alertingService.addDanger(err.toString()));
   }
@@ -41,8 +41,7 @@ export class LoginComponent {
       }, err => {
         this.alertingService.addDanger(err.toString());
         this.alertingService.addDanger('Грешка при бришење на профилот.');
-      }
-      );
+      });
   }
 
   login(): void {

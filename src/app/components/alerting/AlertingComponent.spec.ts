@@ -11,7 +11,7 @@ import {AlertingService} from './AlertingService';
 
 describe('AlertingComponentTests', function() {
   beforeEachProviders(() => [
-    provide(AlertingService, { useClass: AlertingService }),
+    AlertingService,
     AlertingComponent
   ]);
 

@@ -24,53 +24,25 @@ import {UserSettingsServiceMock} from '../../shared/mocks/UserSettingsServiceMoc
 
 describe('UserSettingsEditComponentTests', function() {
   beforeEachProviders(() => [
-    provide(AlertingService, { useClass: AlertingService }),
+    AlertingService,
     provide(AuthService, { useClass: AuthServiceMock }),
     provide(UserSettingsService, { useClass: UserSettingsServiceMock }),
     UserSettingsEditComponent
   ]);
 
-  it('saveUserSettings_givenAvailableUserSettingsService_saveUserSettingsShouldBeCalled',
-    inject([UserSettingsEditComponent], (instance) => {
-      // Arrange
-      spyOn(instance, 'saveUserSettings').and.callThrough();
-
-      // Act
-      var userSettings: UserSettings = new UserSettings();
-      UserSettingsServiceMock.setUserSetting(userSettings);
-      instance.saveUserSettings();
-
-      // Assert
-      expect(instance.saveUserSettings).toHaveBeenCalled();
-    }));
-
   it('saveUserSettings_givenAvailableUserSettingsService_shouldSaveUserSettingsAndAlertForSuccessIsCalled',
     inject([UserSettingsEditComponent], (instance) => {
       // Arrange
-      spyOn(instance, 'saveUserSettings').and.callThrough();
+      instance.userSettings = new UserSettings();
+      UserSettingsServiceMock.setUserSetting(instance.userSettings);
+      spyOn(instance.userSettingsService, 'saveUserSettingsForUser').and.callThrough();
       spyOn(instance.alertingService, 'addSuccess').and.callFake(() => { });
 
       // Act
-      var userSettings: UserSettings = new UserSettings();
-      UserSettingsServiceMock.setUserSetting(userSettings);
-      instance.saveUserSettings();
-
-      // Assert
-      expect(instance.alertingService.addSuccess).toHaveBeenCalledWith('Корисничките подесувања се успешно зачувани.');
-    }));
-
-  it('saveUserSettings_givenAvailableUserSettingsService_saveUserSettingsServiceForUserShouldBeCalledFromUserSettingsService',
-    inject([UserSettingsEditComponent], (instance) => {
-      // Arrange
-      spyOn(instance, 'saveUserSettings').and.callThrough();
-      spyOn(instance.userSettingsService, 'saveUserSettingsForUser').and.callThrough();
-
-      // Act
-      var userSettings: UserSettings = new UserSettings();
-      UserSettingsServiceMock.setUserSetting(userSettings);
       instance.saveUserSettings();
 
       // Assert
       expect(instance.userSettingsService.saveUserSettingsForUser).toHaveBeenCalled();
+      expect(instance.alertingService.addSuccess).toHaveBeenCalledWith('Корисничките подесувања се успешно зачувани.');
     }));
 });

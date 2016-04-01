@@ -19,7 +19,7 @@ var LogInPage = function() {
     browser.get(value);
   };
 
-  this.LogIn = function() {
+  this.logIn = function() {
     profile.count().then(function(counted) {
       console.log(counted);
       profileNumber = parseInt(counted);
@@ -38,7 +38,7 @@ var LogInPage = function() {
   };
 
 
-  this.LogOut = function() {
+  this.logOut = function() {
     logOutbtn.click();
   };
 
@@ -46,52 +46,24 @@ var LogInPage = function() {
     return browser.getCurrentUrl();
   };
 
-  this.FilterUsername = function(filter) {
+  this.filterUsername = function(filter) {
     name.sendKeys(filter);
 
-  }
+  };
 
-  this.FilterUsernameDragica = function() {
-    name.sendKeys("D");
-    name.sendKeys("r");
-    name.sendKeys("a");
-    name.sendKeys("g");
-    name.sendKeys("i");
-    name.sendKeys("c");
-    name.sendKeys("a");
-  }
-
-  this.FilterUsernameJosif = function() {
+  this.filterUsernameJosif = function() {
     name.sendKeys("J");
     name.sendKeys("o");
     name.sendKeys("s");
     name.sendKeys("i");
     name.sendKeys("f");
-  }
+  };
 
-  this.FilterUsernameJosi = function() {
-    name.sendKeys("J");
-    name.sendKeys("o");
-    name.sendKeys("s");
-    name.sendKeys("i");
-  }
-
-  this.FilterUsernameDaniela = function() {
-    name.sendKeys("D");
-    name.sendKeys("a");
-    name.sendKeys("n");
-    name.sendKeys("i");
-    name.sendKeys("e");
-    name.sendKeys("l");
-    name.sendKeys("a");
-
-  }
-
-  this.FilterUsernameClear = function(filter) {
+  this.filterUsernameClear = function(filter) {
     name.clear();
 
   }
-  this.GetTextFromFilter = function() {
+  this.getTextFromFilter = function() {
     return filtered_names.getText();
   }
 
@@ -99,7 +71,7 @@ var LogInPage = function() {
     return signBtn.isPresent();
   }
 
-  this.GetLoggedUser = function() {
+  this.getLoggedUser = function() {
     loggedUser.getAttribute("innerHTML").then(function(text) {
       loggedUsername = text;
       console.log("User logged in: " + loggedUsername);
@@ -107,11 +79,11 @@ var LogInPage = function() {
     });
   };
 
-  this.GetSelectedUser = function() {
+  this.getSelectedUser = function() {
     return selectedName;
   };
 
-  this.GetTitle = function() {
+  this.getTitle = function() {
     return browser.getTitle();
   };
 

@@ -54,10 +54,10 @@ describe('RegisterComponentTests', function() {
   }
 
   beforeEachProviders(() => [
-    provide(AlertingService, { useClass: AlertingService }),
+    AlertingService,
+    UserValidationService,
     provide(ImagesService, { useClass: ImagesServiceMock }),
     provide(UserService, { useClass: UserServiceMock }),
-    provide(UserValidationService, { useClass: UserValidationService }),
     provide(Router, { useClass: RouterMock }),
     FormBuilder,
     HTTP_PROVIDERS,
@@ -65,16 +65,18 @@ describe('RegisterComponentTests', function() {
     RegisterComponent
   ]);
 
-  it('getAvailableImages_givenImagesServiceIsAvailable_shouldReturnJSONOfImageFiles',
+  it('setAvailableImages_givenImagesServiceIsAvailable_shouldReturnJSONOfImageFiles',
     inject([RegisterComponent], (instance) => {
       // Arrange
       var allImagesLocal: string[] = new Array<string>();
       allImagesLocal = ['./app/assets/images/avatars/default.jpg', './app/assets/images/avatars/devojce.png'];
+      spyOn(instance.imagesService, 'getProfileImages').and.callThrough();
 
       // Act
-      instance.getAvailableImages();
+      instance.setAvailableImages();
 
       // Assert
+      expect(instance.imagesService.getProfileImages).toHaveBeenCalled();
       expect(instance.allImages).toEqual(allImagesLocal);
     }));
 
@@ -118,7 +120,7 @@ describe('RegisterComponentTests', function() {
   it('onSubmit_givenInvalidUser_shouldValidateAddUserThrowAlertForDanger',
     inject([RegisterComponent], (instance) => {
       // Arrange
-      let user: User = new User();
+      let user: User = UserServiceMock.getTestUser('user');
       instance.user = setUser(user);
 
       spyOn(instance.userValidationService, 'isValid').and.callFake(() => {
@@ -146,16 +148,24 @@ describe('RegisterComponentTests', function() {
   it('onSubmit_givenDefaultPicSelected_shouldNotAddAndShouldThrowAlertForDanger',
     inject([RegisterComponent], (instance) => {
       // Arrange
-      spyOn(instance.alertingService, 'addDanger').and.callFake(() => { });
       let user: User = new User();
       user.name = 'eljesa';
       user.profileImg = './assets/images/avatars/default.jpg';
       instance.user = user;
+      spyOn(instance.alertingService, 'addDanger').and.callFake(() => { });
+      spyOn(instance.router, 'navigate').and.callThrough();
+      spyOn(instance.userService, 'addUser').and.callFake(() => { });
 
       // Act
       instance.onSubmit();
 
       // Assert
+
       expect(instance.alertingService.addDanger).toHaveBeenCalledWith('За да креирате профил, ве молам изберете слика.');
+
+      expect(instance.userService.addUser).not.toHaveBeenCalledWith(user);
+      expect(instance.router.navigate).not.toHaveBeenCalledWith(['/Login']);
+
+
     }));
 });
