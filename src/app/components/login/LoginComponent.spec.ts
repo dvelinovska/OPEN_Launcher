@@ -19,12 +19,26 @@ import {RouterMock} from '../../shared/mocks/RouterMock';
 
 describe('LoginComponentTests', function() {
   beforeEachProviders(() => [
-    provide(AlertingService, { useClass: AlertingService }),
+    AlertingService,
+    AuthService,
     provide(UserService, { useClass: UserServiceMock }),
-    provide(AuthService, { useClass: AuthService }),
     provide(Router, { useClass: RouterMock }),
     LoginComponent
   ]);
+
+  it('setAllUsers_givenAvailableUserService_shouldReturnAllUsers',
+    inject([LoginComponent], (instance) => {
+      // Arrange
+      var localUsers = [{ 'name': 'user1' }, { 'name': 'user2' }];
+      spyOn(instance.userService, 'getAllUsers').and.callThrough();
+
+      // Act
+      instance.setAllUsers();
+
+      // Assert
+      expect(instance.userService.getAllUsers).toHaveBeenCalled();
+      expect(instance.allUsers).toEqual(localUsers);
+    }));
 
   it('login_givenInvalidUser_shouldSetUnsuccessfulLoginAlertMessage',
     inject([LoginComponent], (instance) => {
@@ -32,6 +46,7 @@ describe('LoginComponentTests', function() {
       var user = UserServiceMock.getTestUser('user1');
       spyOn(instance.authService, 'login').and.callFake(() => { return false; });
       spyOn(instance.alertingService, 'addDanger').and.callFake(() => { });
+      spyOn(instance.router, 'navigate').and.callFake(() => { });
       instance.selectedUser = user;
 
       // Act
@@ -39,10 +54,11 @@ describe('LoginComponentTests', function() {
 
       // Assert
       expect(instance.authService.login).toHaveBeenCalledWith(user.name);
+      expect(instance.router.navigate).not.toHaveBeenCalledWith(['/Home']);
       expect(instance.alertingService.addDanger).toHaveBeenCalledWith('Корисникот не е валиден.');
     }));
 
-  it('login_givenValidUser_shouldSetSuccessfulLoginAlertMessageAndShouldRedirectToHome',
+  it('login_givenValidUser_shouldRedirectToHome',
     inject([LoginComponent], (instance) => {
       // Arrange
       var user = UserServiceMock.getTestUser('user1');
@@ -64,11 +80,13 @@ describe('LoginComponentTests', function() {
       var user = UserServiceMock.getTestUser('user1');
       instance.selectedUser = user;
       spyOn(instance.alertingService, 'addSuccess').and.callFake(() => { });
+      spyOn(instance.userService, 'deleteUser').and.callThrough();
 
       // Act
       instance.deleteUser();
 
       // Assert
+      expect(instance.userService.deleteUser).toHaveBeenCalledWith(user.name);
       expect(instance.allUsers.length).toEqual(1);
       expect(instance.selectedUser).not.toEqual(user);
       expect(instance.alertingService.addSuccess).toHaveBeenCalledWith('Профилот е успешно избришан.');
@@ -123,17 +141,5 @@ describe('LoginComponentTests', function() {
 
       // Assert
       expect(flag).toBeFalsy();
-    }));
-
-  it('getAllUsers_givenAvailableUserService_shouldReturnAllUsers',
-    inject([LoginComponent], (instance) => {
-      // Arrange
-      var localUsers = [{ 'name': 'user1' }, { 'name': 'user2' }];
-
-      // Act
-      instance.getAllUsers();
-
-      // Assert
-      expect(instance.allUsers).toEqual(localUsers);
     }));
 });
