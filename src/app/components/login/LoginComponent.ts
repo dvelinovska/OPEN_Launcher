@@ -32,15 +32,7 @@ export class LoginComponent {
       .subscribe(data => this.allUsers = data, err => this.alertingService.addDanger(err.toString()));
   }
 
-  login(): void {
-    if (!this.authService.login(this.selectedUser.name)) {
-      this.alertingService.addDanger('Корисникот не е валиден.');
-    } else {
-      this.router.navigate(['/Home']);
-    }
-  }
-
-  deleteUser(): void {
+  deleteUser() {
     this.userService.deleteUser(this.selectedUser.name)
       .subscribe(data => {
         this.allUsers = data;
@@ -52,8 +44,12 @@ export class LoginComponent {
       });
   }
 
-  deleteCancelled(): void {
-    this.alertingService.addInfo('Бришењето е откажано.');
+  login(): void {
+    if (!this.authService.login(this.selectedUser.name)) {
+      this.alertingService.addDanger('Корисникот не е валиден.');
+    } else {
+      this.router.navigate(['/Home']);
+    }
   }
 
   selectUser(user: User): void {
@@ -62,5 +58,9 @@ export class LoginComponent {
 
   shouldApplySelectedUserLayout(user: User): boolean {
     return this.selectedUser === user;
+  }
+
+  deleteCancelled(): void {
+    this.alertingService.addInfo('Бришењето е откажано.');
   }
 }

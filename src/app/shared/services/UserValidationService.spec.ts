@@ -1,6 +1,21 @@
+import {
+  it,
+  inject,
+  describe,
+  beforeEachProviders
+} from 'angular2/testing';
+
+import {HTTP_PROVIDERS} from 'angular2/http';
+import {provide} from 'angular2/core';
+import {BaseRequestOptions, Http, Response, ResponseOptions} from 'angular2/http';
+import {MockBackend, MockConnection} from 'angular2/http/testing';
+import {Observable} from 'rxjs/Rx';
+
 import {UserValidationService} from './UserValidationService';
+import {GlobalService} from './GlobalService';
 import {User} from '../models/User';
 import {PointerType, PointerSize, PointerColor, BackgroundColor} from '../enums/UserSettingsEnums';
+import {ValidationResponse} from '../../shared/models/ValidationResponse';
 
 describe('UserValidationServiceTests', function() {
   var instance: UserValidationService = null;
@@ -16,65 +31,164 @@ describe('UserValidationServiceTests', function() {
     return result;
   }
 
-  beforeEach(() => {
-    instance = new UserValidationService();
-  });
+  beforeEachProviders(() => [
+    BaseRequestOptions,
+    MockBackend,
+    provide(Http, {
+      useFactory: function(backend, defaultOptions) {
+        return new Http(backend, defaultOptions);
+      },
+      deps: [MockBackend, BaseRequestOptions]
+    }),
 
-  it('isValid_givenInvalidEmptyUser_shouldReturnErrorMessage', function() {
-    // Arrange
-    var user: User = new User();
+    GlobalService,
+    UserValidationService
+  ]);
 
-    // Act
-    var result = instance.isValid(user);
+  it('should have http', inject([UserValidationService], (userValidationService) => {
+    expect(!!userValidationService.http).toEqual(true);
+  }));
 
-    // Assert
-    expect('Не се сите полиња пополнети.').toEqual(result);
-  });
 
-  it('isValid_givenInvalidUserWithName_shouldReturnErrorMessage', function() {
-    // Arrange
-    var user: User = new User();
-    user.name = 'testName';
 
-    // Act
-    var result = instance.isValid(user);
+  it('isValid_givenDefaultProfilePicture_shouldReturnObservableOfValidationResponseWithInvalidUser',
+    inject([UserValidationService], (instance) => {
+      // Arrange
+      let user: User = new User();
+      user.name = 'eljesa';
+      user.profileImg = './assets/images/avatars/default.jpg';
+      instance.user = user;
 
-    // Assert
-    expect('Не се сите полиња пополнети.').toEqual(result);
-  });
+      spyOn(instance, 'isUserPictureSet').and.callFake(() => {
 
-  it('isValid_givenValidUserWithTheDefaultPicture_shouldReturnErrorMessage', function() {
-    // Arrange
-    var user: User = getValidUser();
-    user.profileImg = './assets/images/avatars/default.jpg';
-    // Act
-    var result = instance.isValid(user);
+        return false;
+      });
 
-    // Assert
-    expect('За да креирате профил, ве молам изберете слика').toEqual(result);
-  });
+      spyOn(instance, 'getInvalidUserPictureValidationResponse').and.callFake(() => { });
 
-  it('isValid_givenValidUser_shouldReturnEmptyMessage', function() {
-    // Arrange
-    var user: User = getValidUser();
+      // Act
+      var result = instance.isValid(user);
 
-    // Act
-    var result = instance.isValid(user);
+      // Assert
+      expect(instance.getInvalidUserPictureValidationResponse).toHaveBeenCalled();
+    }));
 
-    // Assert
-    expect('').toEqual(result);
-  });
+  it('isValid_givenInvalidUserDataValidationResponse_shouldReturnErrorMessage',
+    inject([UserValidationService], (instance) => {
+      // Arrange
+      let user: User = new User();
+      user.name = 'eljesa';
+      user.profileImg = './assets/images/avatars/devojce.jpg';
+      instance.user = user;
 
-  it('isValid_givenValidUserWithDefaultUserSettings_shouldReturnEmptyMessage', function() {
-    // Arrange
-    var user: User = new User();
-    user.name = 'smth';
-    user.profileImg = 'smth';
+      spyOn(instance, 'isUserPictureSet').and.callFake(() => {
+        return true;
+      });
 
-    // Act
-    var result = instance.isValid(user);
+      spyOn(instance, 'isValidUserData').and.callFake(() => {
+        return false;
+      });
 
-    // Assert
-    expect('').toEqual(result);
-  });
+      spyOn(instance, 'getInvalidUserDataValidationResponse').and.callFake(() => { });
+
+      // Act
+      var result = instance.isValid(user);
+
+      // Assert
+      expect(instance.getInvalidUserDataValidationResponse).toHaveBeenCalled();
+    }));
+
+  it('isValid_givenInvalidUserDataValidationResponse_shouldReturnErrorMessage',
+    inject([UserValidationService], (instance) => {
+      // Arrange
+      let user: User = new User();
+      user.name = 'eljesa';
+      user.profileImg = './assets/images/avatars/devojce.jpg';
+      instance.user = user;
+
+      // Act
+      spyOn(instance, 'isUserPictureSet').and.callFake(() => { return true; });
+      spyOn(instance, 'isValidUserData').and.callFake(() => { return true; });
+      spyOn(instance, 'getExistingUserValidationResponse').and.callFake(() => { });
+
+      // Act
+      var result = instance.isValid(user);
+
+      // Assert
+      expect(instance.getExistingUserValidationResponse).toHaveBeenCalled();
+    }));
+
+  it('isValid_givenValidUserDataValidationResponse_shouldReturnSuccessMessage',
+    inject([UserValidationService], (instance) => {
+      // Arrange
+      let user: User = new User();
+      user.name = 'eljesa';
+      user.profileImg = './assets/images/avatars/devojce.jpg';
+      instance.user = user;
+
+      // Act
+      spyOn(instance, 'isUserPictureSet').and.callFake(() => { return true; });
+      spyOn(instance, 'isValidUserData').and.callFake(() => { return true; });
+      spyOn(instance, 'getExistingUserValidationResponse').and.callFake(() => {
+        var response: ValidationResponse = new ValidationResponse(false);
+        return Observable.of(response);
+      });
+
+      // Act
+      var result = instance.isValid(user);
+
+      // Assert
+      expect(instance.getExistingUserValidationResponse).toHaveBeenCalled();
+    }));
+
+  it('getInvalidUserPictureValidationResponse_givenInvalidValidationResponse_shouldReturnErrorMessage',
+    inject([UserValidationService], (instance) => {
+      // Arrange
+      var response = new ValidationResponse(false, 'За да креирате профил, ве молам изберете слика.');
+      var result: ValidationResponse;
+
+      // Act
+      instance.getInvalidUserPictureValidationResponse().subscribe(data => { result = data });
+
+      // Assert
+      expect(result).toEqual(response);
+    }));
+
+  it('getExistingUserValidationResponse_givenInvalidEmptyUser_shouldReturnErrorMessage',
+    inject([UserValidationService, MockBackend], (userValidationService, mockBackend) => {
+      // Arrange
+      var existingUser = true;
+
+      mockBackend.connections.subscribe(
+        (connection: MockConnection) => {
+          connection.mockRespond(new Response(
+            new ResponseOptions({
+              body: JSON.stringify(existingUser)
+            }
+            )));
+        });
+
+      // Act
+      userValidationService.isExistingUser('user').subscribe(
+        (data) => {
+          // Assert
+          expect(data).toBeTruthy();
+        },
+        (error) => {
+          fail(error);
+        }
+      );
+    }));
+
+  it('isExistingUser_givenValidusername_shouldCallHttpSuccessfully',
+    inject([UserValidationService], (userValidationService) => {
+      // Arrange
+      spyOn(userValidationService.http, "get").and.callFake(() => { });
+
+      // Act
+      userValidationService.isExistingUser('user');
+
+      // Assert
+      expect(userValidationService.http.get).toHaveBeenCalled();
+    }));
 });
