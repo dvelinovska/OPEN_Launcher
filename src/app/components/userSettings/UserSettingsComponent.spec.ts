@@ -20,20 +20,20 @@ import {ImagesServiceMock} from '../../shared/mocks/ImagesServiceMock';
 
 describe('UserSettingsComponentTests', function() {
   beforeEachProviders(() => [
-    provide(AlertingService, { useClass: AlertingService }),
-    provide(UserSettingsColorsService, { useClass: UserSettingsColorsService }),
+    AlertingService,
+    UserSettingsColorsService,
     provide(ImagesService, { useClass: ImagesServiceMock }),
     UserSettingsComponent
   ]);
 
-  it('getAvailableImages_givenAvailableImageService_shouldSetAllPointerImages',
+  it('setAvailableImages_givenAvailableImageService_shouldSetAllPointerImages',
     inject([UserSettingsComponent], (instance) => {
       // Arrange
       var allPointerImagesLocal = ['./app/assets/images/pointer/small.png', './app/assets/images/pointer/big.png'];
       spyOn(instance.imagesService, 'getPointerImages').and.callThrough();
 
       // Act
-      instance.getAvailableImages();
+      instance.setAvailableImages();
 
       // Assert
       expect(instance.allPointerImages).toEqual(allPointerImagesLocal);

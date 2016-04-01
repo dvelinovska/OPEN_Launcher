@@ -19,8 +19,10 @@ export class UploadPictureService {
     if (this.multipartItem == null) {
       this.multipartItem = new MultipartItem(this.uploader);
     }
-    if (this.multipartItem.formData == null)
+
+    if (this.multipartItem.formData == null) {
       this.multipartItem.formData = new FormData();
+    }
 
     this.multipartItem.formData.append('userPhoto', file);
     this.multipartItem.withCredentials = false;
