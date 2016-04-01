@@ -40,12 +40,12 @@ export class UserValidationService {
       && user.userSettings.pointerType >= 0;
   }
 
-  isExistingUser(username: string): any {
+  isExistingUser(username: string): any{
     return this.http.get(this.globalService.URL_IS_EXISTINGUSER(username));
   }
 
   getInvalidUserPictureValidationResponse(): Observable<ValidationResponse> {
-    var response = new ValidationResponse(false, 'За да креирате профил, ве молам изберете слика');
+    var response = new ValidationResponse(false, 'За да креирате профил, ве молам изберете слика.');
     return Observable.of(response);
   }
 
@@ -61,7 +61,7 @@ export class UserValidationService {
         var response = new ValidationResponse(!isExisting);
 
         if (isExisting) {
-          response.message = 'Корисничкото име веќе постои, обидете се да се регистрирате со друго име';
+          response.message = 'Корисничкото име веќе постои, обидете се да се регистрирате со друго име.';
         }
         return response;
       });
