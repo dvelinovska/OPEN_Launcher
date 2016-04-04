@@ -11,7 +11,7 @@ describe("Game menu log in user", function() {
   beforeEach(function() {
     console.log(" Before Method : Before Each Function");
     CreateUserPage.get("http://localhost:3000/#/login");
-    browser.sleep(2000);
+    CreateUserPage.waitforCreateBtn();
     CreateUserPage.clickCreateBtn();
     browser.sleep(1000);
 
@@ -36,11 +36,11 @@ describe("Game menu log in user", function() {
     browser.sleep(500);
     browser.ignoreSynchronization = true;
     expect(CreateUserPage.returnMessage()).toEqual("Корисничкото име веќе постои, обидете се да се регистрирате со друго име");
+    browser.sleep(500);
+    browser.ignoreSynchronization = false;
     CreateUserPage.clickBack();
     LogInPage.filterUsernameJosif();
     DeleteUser.deleteFilteredUser();
-    browser.sleep(500);
-    browser.ignoreSynchronization = false;
     console.log("Finishing : User with same name already exists");
   });
 
