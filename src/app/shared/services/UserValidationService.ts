@@ -31,17 +31,16 @@ export class UserValidationService implements IUserValidationService {
   }
 
   isValidUserData(user: User): boolean {
-    return user.name
+    var result: boolean;
+    result = user.name
       && user.profileImg
       && user.userSettings
       && user.userSettings.backgroundColor >= 0
       && user.userSettings.pointerColor >= 0
       && user.userSettings.pointerSize >= 0
       && user.userSettings.pointerType >= 0;
-  }
 
-  isExistingUser(username: string): any {
-    return this.http.get(this.globalService.URL_IS_EXISTINGUSER(username));
+    return result;
   }
 
   getInvalidUserPictureValidationResponse(): Observable<ValidationResponse> {
@@ -55,7 +54,7 @@ export class UserValidationService implements IUserValidationService {
   }
 
   getExistingUserValidationResponse(username: string): Observable<ValidationResponse> {
-    return this.isExistingUser(username)
+    return this.http.get(this.globalService.URL_IS_EXISTINGUSER(username))
       .map(res => {
         var isExisting: boolean = JSON.parse(res.json());
         var response = new ValidationResponse(!isExisting);
