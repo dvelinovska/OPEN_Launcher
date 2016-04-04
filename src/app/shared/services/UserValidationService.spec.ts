@@ -132,7 +132,7 @@ describe('UserValidationServiceTests', () => {
       expect(result).toBeFalsy();
     }));
 
-  it('getInvalidUserPictureValidationResponse_givenInvalidValidationResponse_shouldReturnValidationResponseForInvalidUserData',
+  it('getInvalidUserPictureValidationResponse_givenInvalidUserPicture_shouldReturnValidationResponseForInvalidUserData',
     inject([UserValidationService], (instance) => {
       // Arrange
       var response = new ValidationResponse(false, 'За да креирате профил, ве молам изберете слика.');
@@ -145,7 +145,7 @@ describe('UserValidationServiceTests', () => {
       expect(result).toEqual(response);
     }));
 
-  it('getInvalidUserDataValidationResponse_givenFunctionIsCalled_shouldReturnValidationResponseForInvalidUserData',
+  it('getInvalidUserDataValidationResponse_givenInvalidUserData_shouldReturnValidationResponseForInvalidUserData',
     inject([UserValidationService], (instance) => {
       // Arrange
       var response = new ValidationResponse(false, 'Не се сите полиња пополнети.');
