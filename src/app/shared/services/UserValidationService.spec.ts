@@ -79,7 +79,7 @@ describe('UserValidationServiceTests', () => {
       expect(instance.getInvalidUserDataValidationResponse).toHaveBeenCalled();
     }));
 
-  it('isValid_givenValidUserDataValidationResponse_shouldReturnValidationResponseForInvalidUserData',
+  it('isValid_givenValidUserData_shouldReturnValidationResponseForInvalidUserData',
     inject([UserValidationService], (instance) => {
       // Arrange
       let user: User = getValidUser();
