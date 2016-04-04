@@ -120,7 +120,7 @@ describe('UserValidationServiceTests', () => {
       var result: ValidationResponse;
 
       // Act
-      instance.getInvalidUserPictureValidationResponse().subscribe(data => { result = data });
+      instance.getInvalidUserPictureValidationResponse().subscribe(data => { result = data; });
 
       // Assert
       expect(result).toEqual(response);
@@ -154,7 +154,7 @@ describe('UserValidationServiceTests', () => {
   it('isExistingUser_givenValidusername_shouldCallHttpSuccessfully',
     inject([UserValidationService], (userValidationService) => {
       // Arrange
-      spyOn(userValidationService.http, "get").and.callFake(() => { });
+      spyOn(userValidationService.http, 'get').and.callFake(() => { });
 
       // Act
       userValidationService.isExistingUser('user');
