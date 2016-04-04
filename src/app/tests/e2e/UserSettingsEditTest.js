@@ -10,7 +10,7 @@ describe("Game menu edit user settings", function() {
   beforeEach(function() {
     console.log(" Before Method : Before Each Function");
     UserSettingsEditPage.get("http://localhost:3000/#/login");
-    browser.sleep(2000);
+    CreateUserPage.waitforCreateBtn();
     CreateUserPage.clickCreateBtn();
     browser.sleep(500);
 
@@ -24,6 +24,7 @@ describe("Game menu edit user settings", function() {
     console.log("user name filtered");
     UserSettingsEditPage.openUserSettings();
     console.log("user settings edit open");
+    expect(UserSettingsEditPage.isColorThemeSelected()).toBe(true);
     expect(UserSettingsEditPage.isWhiteColorSelected()).toBe(true);
     expect(UserSettingsEditPage.isSmallPointerSelected()).toBe(true);
     browser.get("http://localhost:3000/#/login");
@@ -41,6 +42,7 @@ describe("Game menu edit user settings", function() {
     console.log("user name filtered");
     UserSettingsEditPage.openUserSettings();
     console.log("user settings edit open");
+    expect(UserSettingsEditPage.isColorThemeSelected()).toBe(true);
     expect(UserSettingsEditPage.isRedColorSelected()).toBe(true);
     expect(UserSettingsEditPage.isMediumPointerSelected()).toBe(true);
     browser.get("http://localhost:3000/#/login");
@@ -56,12 +58,14 @@ describe("Game menu edit user settings", function() {
     console.log("user name filtered");
     UserSettingsEditPage.openUserSettings();
     console.log("user settings edit open");
+    CreateUserPage.selectRadioButton("1");
     CreateUserPage.selectMediumPointer();
-    CreateUserPage.selectRedColor();
+    CreateUserPage.selectYellowColor();
     UserSettingsEditPage.userSettingsSave();
     browser.get("http://localhost:3000/#/login");
     UserSettingsEditPage.openUserSettings();
-    expect(UserSettingsEditPage.isRedColorSelected()).toBe(true);
+    expect(UserSettingsEditPage.isBWThemeSelected()).toBe(true);
+    expect(UserSettingsEditPage.isYellowColorSelected()).toBe(true);
     expect(UserSettingsEditPage.isMediumPointerSelected()).toBe(true);
     browser.get("http://localhost:3000/#/login");
     LogInPage.filterUsernameJosif();

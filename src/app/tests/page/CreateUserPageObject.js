@@ -52,6 +52,7 @@ var CreateUserPage = function() {
     for (var i = 0; i < 3; i++) {
       autoGenerateUserName += possible.charAt(Math.floor(Math.random() * possible.length));
     };
+    browser.sleep(500);
     enterName.sendKeys(autoGenerateUserName);
   };
 
@@ -63,6 +64,7 @@ var CreateUserPage = function() {
     for (var i = 0; i < 3; i++) {
       autoGenerateUserName += possible.charAt(Math.floor(Math.random() * possible.length));
     };
+    browser.sleep(500);
     enterName.sendKeys(autoGenerateUserName);
     selectRandomPicture();
   }
@@ -180,10 +182,15 @@ var CreateUserPage = function() {
   this.isRedPresent = function() {
 
     return colorRed.isPresent();
-  }
+  };
+
 
   this.waitforCreateBtn = function() {
     browser.wait(EC.visibilityOf(createBtnFirstPage), 5000);
+  };
+
+  this.waitforCreateBtnSecondPage = function() {
+    browser.wait(EC.visibilityOf(createBtnSecondPage), 5000);
   };
 
   this.selectMediumPointer = function() {
