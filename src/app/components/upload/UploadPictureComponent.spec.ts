@@ -38,9 +38,19 @@ describe('UploadPictureComponentTests', () => {
     instance.uploadFile();
 
     // Assert
-    expect(instance.selectedImage).toEqual('');
-    expect(instance.selectedFiles).toEqual(null);
     expect(instance.uploadPictureService.upload).toHaveBeenCalledWith(instance.selectedFiles[0]);
     expect(instance.resetSelected).toHaveBeenCalled();
+  }));
+
+  it('resetSelected_givenSelectedImage_shouldResetSelectedImageAndFile', inject([UploadPictureComponent], (instance) => {
+    // Arrange
+    instance.selectedFiles = new Array<File>();
+    instance.selectedImage = 'image';
+
+    // Act
+    instance.resetSelected();
+
+    // Assert
+    expect(instance.selectedImage).toEqual('');
   }));
 });

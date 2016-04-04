@@ -99,12 +99,17 @@ app.get('/api/getAllUsers/:name?', function(req, res) {
 
 // Add new user in the json lowdb file
 app.post('/api/addUser', function(req, res) {
-  var existingUser = db('users').find({ name: req.body.name });
+  db('users').push(req.body)
+    .then(post => res.send({ data: db('users').value() }));
+});
+
+// Checking if user already exists
+app.get('/api/isExistingUser/:username', function(req, res) {
+  var existingUser = db('users').find({ name: req.params.username });
   if (existingUser) {
-    res.send({ data: db('users').value(), message: "Корисникот веќе постои" });
-  }
-  else {
-    db('users').push(req.body).then(post => res.send({ data: db('users').value(), message: "" }));
+    res.send(true);
+  } else {
+    res.send(false);
   }
 });
 

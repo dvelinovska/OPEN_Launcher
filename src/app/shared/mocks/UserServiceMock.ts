@@ -11,6 +11,14 @@ export class UserServiceMock implements IUserService {
     return user;
   }
 
+  static getAllUsers(user: User): User[] {
+    var allUsers: User[] = new Array<User>();
+    allUsers[0] = UserServiceMock.getTestUser('user1');
+    allUsers[1] = UserServiceMock.getTestUser('user2');
+    allUsers[2] = user;
+    return allUsers;
+  }
+
   addUser(user: User) {
     return Observable.of(JSON.parse(''));
   }

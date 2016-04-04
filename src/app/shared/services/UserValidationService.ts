@@ -1,29 +1,70 @@
 import {Injectable, bind} from 'angular2/core';
+import {Http} from 'angular2/http';
+import {Observable} from 'rxjs';
 
+import {GlobalService} from './GlobalService';
 import {User} from '../models/User';
+import {ValidationResponse} from '../models/ValidationResponse';
 
 export interface IUserValidationService {
-  isValid(user: User): string;
+  isValid(user: User): Observable<ValidationResponse>;
 }
 
 @Injectable()
 export class UserValidationService implements IUserValidationService {
-  constructor() { }
+  constructor(private http: Http, private globalService: GlobalService) { }
 
-  isValid(user: User): string {
-    if (user.profileImg === './assets/images/avatars/default.jpg') {
-      return 'За да креирате профил, ве молам изберете слика';
+  isValid(user: User): Observable<ValidationResponse> {
+    if (!this.isUserPictureSet(user)) {
+      return this.getInvalidUserPictureValidationResponse();
     }
-    if (!user.name
-      || !user.profileImg
-      || !user.userSettings
-      || user.userSettings.backgroundColor < 0
-      || user.userSettings.pointerColor < 0
-      || user.userSettings.pointerSize < 0
-      || user.userSettings.pointerType < 0) {
-      return 'Не се сите полиња пополнети.';
+
+    if (!this.isValidUserData(user)) {
+      return this.getInvalidUserDataValidationResponse();
     }
-    return '';
+
+    return this.getExistingUserValidationResponse(user.name);
+  }
+
+  isUserPictureSet(user: User): boolean {
+    return user.profileImg !== './assets/images/avatars/default.jpg';
+  }
+
+  isValidUserData(user: User): boolean {
+    return user.name
+      && user.profileImg
+      && user.userSettings
+      && user.userSettings.backgroundColor >= 0
+      && user.userSettings.pointerColor >= 0
+      && user.userSettings.pointerSize >= 0
+      && user.userSettings.pointerType >= 0;
+  }
+
+  isExistingUser(username: string): any {
+    return this.http.get(this.globalService.URL_IS_EXISTINGUSER(username));
+  }
+
+  getInvalidUserPictureValidationResponse(): Observable<ValidationResponse> {
+    var response = new ValidationResponse(false, 'За да креирате профил, ве молам изберете слика.');
+    return Observable.of(response);
+  }
+
+  getInvalidUserDataValidationResponse(): Observable<ValidationResponse> {
+    var response = new ValidationResponse(false, 'Не се сите полиња пополнети.');
+    return Observable.of(response);
+  }
+
+  getExistingUserValidationResponse(username: string): Observable<ValidationResponse> {
+    return this.isExistingUser(username)
+      .map(res => {
+        var isExisting: boolean = JSON.parse(res.json());
+        var response = new ValidationResponse(!isExisting);
+
+        if (isExisting) {
+          response.message = 'Корисничкото име веќе постои, обидете се да се регистрирате со друго име.';
+        }
+        return response;
+      });
   }
 }
 

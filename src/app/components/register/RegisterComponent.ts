@@ -53,20 +53,19 @@ export class RegisterComponent {
   }
 
   onSubmit(): void {
-    var validationMessage = this.userValidationService.isValid(this.user);
-    if (validationMessage) {
-      this.alertingService.addDanger(validationMessage);
-    } else {
-      this.userService.addUser(this.user)
-        .subscribe(data => {
-          if (data.message.length > 0) {
-            this.alertingService.addDanger('Корисничкото име веќе постои, обидете се да се регистрирате со друго име');
-          } else {
-            this.alertingService.addSuccess('Успешно внесен корисник.');
-            this.router.navigate(['/Login']);
-          }
-        }, err => this.alertingService.addDanger(err.toString()));
-    }
+    this.userValidationService.isValid(this.user)
+      .subscribe(validationResponse => {
+        if (!validationResponse.isValid) {
+          this.alertingService.addDanger(validationResponse.message);
+        } else {
+          this.userService.addUser(this.user)
+            .subscribe(data => {
+              this.alertingService.addSuccess('Успешно внесен корисник.');
+              this.router.navigate(['/Login']);
+            }, err => this.alertingService.addDanger(err.toString()));
+        }
+      }
+      );
   }
 
   private getInitialUser(): User {
