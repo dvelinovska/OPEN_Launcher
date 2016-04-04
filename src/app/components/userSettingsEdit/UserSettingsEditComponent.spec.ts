@@ -22,7 +22,7 @@ import {PointerType, PointerSize, PointerColor, BackgroundColor} from '../../sha
 import {AuthServiceMock} from '../../shared/mocks/AuthServiceMock';
 import {UserSettingsServiceMock} from '../../shared/mocks/UserSettingsServiceMock';
 
-describe('UserSettingsEditComponentTests', function() {
+describe('UserSettingsEditComponentTests', () => {
   beforeEachProviders(() => [
     AlertingService,
     provide(AuthService, { useClass: AuthServiceMock }),

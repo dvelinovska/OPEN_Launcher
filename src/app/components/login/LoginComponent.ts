@@ -32,7 +32,7 @@ export class LoginComponent {
       .subscribe(data => this.allUsers = data, err => this.alertingService.addDanger(err.toString()));
   }
 
-  deleteUser() {
+  deleteUser(): void {
     this.userService.deleteUser(this.selectedUser.name)
       .subscribe(data => {
         this.allUsers = data;
@@ -42,6 +42,10 @@ export class LoginComponent {
         this.alertingService.addDanger(err.toString());
         this.alertingService.addDanger('Грешка при бришење на профилот.');
       });
+  }
+
+  deleteCancelled(): void {
+    this.alertingService.addInfo('Бришењето е откажано.');
   }
 
   login(): void {
@@ -58,9 +62,5 @@ export class LoginComponent {
 
   shouldApplySelectedUserLayout(user: User): boolean {
     return this.selectedUser === user;
-  }
-
-  deleteCancelled(): void {
-    this.alertingService.addInfo('Бришењето е откажано.');
   }
 }

@@ -4,7 +4,6 @@ import {
   describe,
   beforeEachProviders
 } from 'angular2/testing';
-
 import {HTTP_PROVIDERS} from 'angular2/http';
 import {provide} from 'angular2/core';
 import {BaseRequestOptions, Http, Response, ResponseOptions} from 'angular2/http';
@@ -17,17 +16,13 @@ import {User} from '../models/User';
 import {PointerType, PointerSize, PointerColor, BackgroundColor} from '../enums/UserSettingsEnums';
 import {ValidationResponse} from '../../shared/models/ValidationResponse';
 
-describe('UserValidationServiceTests', function() {
+describe('UserValidationServiceTests', () => {
   var instance: UserValidationService = null;
 
   function getValidUser() {
     var result = new User();
     result.name = 'testName';
     result.profileImg = 'someProfileImage';
-    result.userSettings.backgroundColor = BackgroundColor.InColor;
-    result.userSettings.pointerColor = PointerColor.White;
-    result.userSettings.pointerSize = PointerSize.Small;
-    result.userSettings.pointerType = PointerType.Hand;
     return result;
   }
 
@@ -40,7 +35,6 @@ describe('UserValidationServiceTests', function() {
       },
       deps: [MockBackend, BaseRequestOptions]
     }),
-
     GlobalService,
     UserValidationService
   ]);
@@ -49,21 +43,14 @@ describe('UserValidationServiceTests', function() {
     expect(!!userValidationService.http).toEqual(true);
   }));
 
-
-
   it('isValid_givenDefaultProfilePicture_shouldReturnObservableOfValidationResponseWithInvalidUser',
     inject([UserValidationService], (instance) => {
       // Arrange
-      let user: User = new User();
-      user.name = 'eljesa';
+      let user: User = getValidUser();
       user.profileImg = './assets/images/avatars/default.jpg';
-      instance.user = user;
-
       spyOn(instance, 'isUserPictureSet').and.callFake(() => {
-
         return false;
       });
-
       spyOn(instance, 'getInvalidUserPictureValidationResponse').and.callFake(() => { });
 
       // Act
@@ -76,19 +63,13 @@ describe('UserValidationServiceTests', function() {
   it('isValid_givenInvalidUserDataValidationResponse_shouldReturnErrorMessage',
     inject([UserValidationService], (instance) => {
       // Arrange
-      let user: User = new User();
-      user.name = 'eljesa';
-      user.profileImg = './assets/images/avatars/devojce.jpg';
-      instance.user = user;
-
+      let user: User = getValidUser();
       spyOn(instance, 'isUserPictureSet').and.callFake(() => {
         return true;
       });
-
       spyOn(instance, 'isValidUserData').and.callFake(() => {
         return false;
       });
-
       spyOn(instance, 'getInvalidUserDataValidationResponse').and.callFake(() => { });
 
       // Act
@@ -101,12 +82,8 @@ describe('UserValidationServiceTests', function() {
   it('isValid_givenInvalidUserDataValidationResponse_shouldReturnErrorMessage',
     inject([UserValidationService], (instance) => {
       // Arrange
-      let user: User = new User();
-      user.name = 'eljesa';
+      let user: User = getValidUser();
       user.profileImg = './assets/images/avatars/devojce.jpg';
-      instance.user = user;
-
-      // Act
       spyOn(instance, 'isUserPictureSet').and.callFake(() => { return true; });
       spyOn(instance, 'isValidUserData').and.callFake(() => { return true; });
       spyOn(instance, 'getExistingUserValidationResponse').and.callFake(() => { });
@@ -121,12 +98,7 @@ describe('UserValidationServiceTests', function() {
   it('isValid_givenValidUserDataValidationResponse_shouldReturnSuccessMessage',
     inject([UserValidationService], (instance) => {
       // Arrange
-      let user: User = new User();
-      user.name = 'eljesa';
-      user.profileImg = './assets/images/avatars/devojce.jpg';
-      instance.user = user;
-
-      // Act
+      let user: User = getValidUser();
       spyOn(instance, 'isUserPictureSet').and.callFake(() => { return true; });
       spyOn(instance, 'isValidUserData').and.callFake(() => { return true; });
       spyOn(instance, 'getExistingUserValidationResponse').and.callFake(() => {
@@ -148,7 +120,7 @@ describe('UserValidationServiceTests', function() {
       var result: ValidationResponse;
 
       // Act
-      instance.getInvalidUserPictureValidationResponse().subscribe(data => { result = data });
+      instance.getInvalidUserPictureValidationResponse().subscribe(data => { result = data; });
 
       // Assert
       expect(result).toEqual(response);
@@ -158,7 +130,6 @@ describe('UserValidationServiceTests', function() {
     inject([UserValidationService, MockBackend], (userValidationService, mockBackend) => {
       // Arrange
       var existingUser = true;
-
       mockBackend.connections.subscribe(
         (connection: MockConnection) => {
           connection.mockRespond(new Response(
@@ -183,7 +154,7 @@ describe('UserValidationServiceTests', function() {
   it('isExistingUser_givenValidusername_shouldCallHttpSuccessfully',
     inject([UserValidationService], (userValidationService) => {
       // Arrange
-      spyOn(userValidationService.http, "get").and.callFake(() => { });
+      spyOn(userValidationService.http, 'get').and.callFake(() => { });
 
       // Act
       userValidationService.isExistingUser('user');
