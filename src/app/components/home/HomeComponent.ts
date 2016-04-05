@@ -12,7 +12,7 @@ import {User} from '../../shared/models/User';
 export class HomeComponent {
     public allUsers: User[] = new Array<User>();
     public newUser: User = new User();
-    public zapoznajSeSoKomp = ['Cause and Effect'];
+    public zapoznajSeSoKomp = "Cause and Effect";
     public ucimeSoKomp = ['Sets', 'Who is hiding', 'Puzzle/Halves', 'Me and my home', 'Story'];
 
     constructor(private authService: AuthService) { }

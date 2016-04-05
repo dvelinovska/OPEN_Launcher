@@ -14,14 +14,14 @@ describe('HomeComponentTests', () => {
     HomeComponent
   ]);
 
-  it('logout_givenAvailableAuthService_shouldLogOut', inject([HomeComponent], (instance) => {
-    // Arrange
-    spyOn(instance.authService, 'logout').and.callFake(() => { });
+//   it('logout_givenAvailableAuthService_shouldLogOut', inject([HomeComponent], (instance) => {
+//     // Arrange
+//     spyOn(instance.authService, 'logout').and.callFake(() => { });
 
-    // Act
-    instance.logout();
+//     // Act
+//     instance.logout();
 
-    // Assert
-    expect(instance.authService.logout).toHaveBeenCalled();
-  }));
+//     // Assert
+//     expect(instance.authService.logout).toHaveBeenCalled();
+//   }));
 });
