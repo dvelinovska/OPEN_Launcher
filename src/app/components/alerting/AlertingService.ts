@@ -7,7 +7,7 @@ export interface IAlertingService {
   addInfo(message: string): void;
   addWarning(message: string): void;
   addDanger(message: string): void;
-  removeAlert(alert: Alert): void
+  removeAlert(alert: Alert): void;
 }
 
 @Injectable()
