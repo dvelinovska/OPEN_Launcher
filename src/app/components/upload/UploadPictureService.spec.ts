@@ -13,20 +13,19 @@ import {AlertingService} from '../alerting/AlertingService';
 
 describe('UploadPictureServiceTests', () => {
   beforeEachProviders(() => [
-    BaseRequestOptions,
-    MockBackend,
-    provide(Http, {
-      useFactory: (backend, defaultOptions) => {
-        return new Http(backend, defaultOptions);
-      },
-      deps: [MockBackend, BaseRequestOptions]
-    }),
     GlobalService,
     AlertingService,
     UploadPictureService
   ]);
 
-  it('', () => {
+  it('upload_givenFile_should', inject([UploadPictureService], (instance) => {
+    // Arrange
+    spyOn(instance.multipartItem, 'upload').and.callFake(() => { });
 
-  });
+    // Act
+    instance.upload(new Array<File>()[0]);
+
+    // Assert
+    expect(instance.multipartItem.upload).toHaveBeenCalled();
+  }));
 });
