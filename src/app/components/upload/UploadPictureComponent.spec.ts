@@ -14,7 +14,7 @@ describe('UploadPictureComponentTests', () => {
   beforeEachProviders(() => [
 
     GlobalService,
-        AlertingService,
+    AlertingService,
     UploadPictureService,
     UploadPictureComponent
   ]);
