@@ -19,6 +19,7 @@ var UserSettingsEditPage = function() {
   };
 
   this.openUserSettings = function() {
+    loggedUser.click();
     userSettings.click();
   }
 
