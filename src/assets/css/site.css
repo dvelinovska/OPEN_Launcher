@@ -87,3 +87,15 @@ a.link{
     top:0;
     right:0;
 }
+
+.btn-block{
+    text-align: left;
+}
+
+figure {
+    text-align: center;
+}
+
+.panel {
+    border: 0;
+}

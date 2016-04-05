@@ -51,6 +51,10 @@ export class App {
     }
     return false;
   }
+
+  logout() {
+    this.authService.logout();
+  }
 }
 
 bootstrap(App, [servicesInjectables,
