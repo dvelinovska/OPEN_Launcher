@@ -51,7 +51,7 @@ describe('LoginComponentTests', () => {
 
       // Assert
       expect(instance.userService.getAllUsers).toHaveBeenCalled();
-      expect(instance.alertingService.addDanger).toHaveBeenCalledWith('Грешка при вчитување на корисниците');
+      expect(instance.alertingService.addDanger).toHaveBeenCalledWith('Грешка при вчитување на корисниците.');
     }));
 
   it('login_givenInvalidUser_shouldSetUnsuccessfulLoginAlertMessage',

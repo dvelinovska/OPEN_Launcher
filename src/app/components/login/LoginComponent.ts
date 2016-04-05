@@ -30,7 +30,7 @@ export class LoginComponent {
   setAllUsers(): void {
     this.userService.getAllUsers()
       .subscribe(data => this.allUsers = data,
-      err => this.alertingService.addDanger('Грешка при вчитување на корисниците'));
+      err => this.alertingService.addDanger('Грешка при вчитување на корисниците.'));
   }
 
   deleteUser(): void {
