@@ -151,8 +151,7 @@ describe('UserValidationServiceTests', () => {
           connection.mockRespond(new Response(
             new ResponseOptions({
               body: JSON.stringify(userAlreadyExists)
-            }
-            )));
+            })));
         });
 
       // Act
@@ -173,8 +172,7 @@ describe('UserValidationServiceTests', () => {
           connection.mockRespond(new Response(
             new ResponseOptions({
               body: JSON.stringify(userAlreadyExists)
-            }
-            )));
+            })));
         });
 
       // Act
