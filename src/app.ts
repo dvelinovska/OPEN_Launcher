@@ -29,31 +29,35 @@ import { AuthService } from './app/shared/services/AuthService';
 import { AUTH_PROVIDERS } from './app/shared/services/AuthService';
 
 @Component({
-  selector: 'app',
-  directives: [ROUTER_DIRECTIVES, AlertingComponent],
-  templateUrl: `./app.html`
+    selector: 'app',
+    directives: [ROUTER_DIRECTIVES, AlertingComponent],
+    templateUrl: `./app.html`
 })
 
 @RouteConfig([
-  { path: '/', redirectTo: ['/Login'] },
-  { path: '/home', component: HomeComponent, name: 'Home' },
-  { path: '/uploadpicture', component: UploadPictureComponent, name: 'UploadPicture' },
-  { path: '/register', component: RegisterComponent, name: 'Register' },
-  { path: '/login', component: LoginComponent, name: 'Login' },
-  { path: '/userSettingsEdit', component: UserSettingsEditComponent, name: 'UserSettingsEdit' },
+    { path: '/', redirectTo: ['/Login'] },
+    { path: '/home', component: HomeComponent, name: 'Home' },
+    { path: '/uploadpicture', component: UploadPictureComponent, name: 'UploadPicture' },
+    { path: '/register', component: RegisterComponent, name: 'Register' },
+    { path: '/login', component: LoginComponent, name: 'Login' },
+    { path: '/userSettingsEdit', component: UserSettingsEditComponent, name: 'UserSettingsEdit' },
 ])
 export class App {
-  constructor(private authService: AuthService) { }
+    constructor(private authService: AuthService) { }
 
-  isUserLogged(): boolean {
-    if (this.authService.isLogged()) {
-      return true;
+    isUserLogged(): boolean {
+        if (this.authService.isLogged()) {
+            return true;
+        }
+        return false;
     }
-    return false;
-  }
+    
+    logout() {
+        this.authService.logout();
+    }
 }
 
 bootstrap(App, [servicesInjectables,
-  AUTH_PROVIDERS, ROUTER_PROVIDERS, HTTP_PROVIDERS,
-  provide(APP_BASE_HREF, { useValue: '/' }),
-  provide(LocationStrategy, { useClass: HashLocationStrategy })]);
+    AUTH_PROVIDERS, ROUTER_PROVIDERS, HTTP_PROVIDERS,
+    provide(APP_BASE_HREF, { useValue: '/' }),
+    provide(LocationStrategy, { useClass: HashLocationStrategy })]);
