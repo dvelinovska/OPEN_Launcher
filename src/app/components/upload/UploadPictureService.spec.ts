@@ -4,8 +4,6 @@ import {
   inject
 } from 'angular2/testing';
 import {provide} from 'angular2/core';
-import {BaseRequestOptions, Http, Response, ResponseOptions} from 'angular2/http';
-import {MockBackend, MockConnection} from 'angular2/http/testing';
 
 import {UploadPictureService} from './UploadPictureService';
 import {GlobalService} from '../../shared/services/GlobalService';
@@ -18,7 +16,7 @@ describe('UploadPictureServiceTests', () => {
     UploadPictureService
   ]);
 
-  it('upload_givenFile_should', inject([UploadPictureService], (instance) => {
+  it('upload_givenFile_shouldCallUploadFromMultipartUploaderPlugin', inject([UploadPictureService], (instance) => {
     // Arrange
     spyOn(instance.multipartItem, 'upload').and.callFake(() => { });
 
