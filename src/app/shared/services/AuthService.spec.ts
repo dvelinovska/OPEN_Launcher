@@ -14,7 +14,7 @@ describe('AuthServiceTests', () => {
     instance = new AuthService();
   });
 
-  it('login_givenValidUsername_shouldReturnTrue', () => {
+  it('login_givenValidUsername_shouldBeTruthy', () => {
     // Arrange
     var usernameKey = 'username';
     var usernameValue = 'dragica';
@@ -28,7 +28,7 @@ describe('AuthServiceTests', () => {
     expect(localStorage.setItem).toHaveBeenCalledWith(usernameKey, usernameValue);
   });
 
-  it('login_givenInvalidUsername_shouldReturnFalse', () => {
+  it('login_givenInvalidUsername_shouldBeFalsy', () => {
     //Arrange
     var username = '';
 
@@ -65,7 +65,7 @@ describe('AuthServiceTests', () => {
 
   });
 
-  it('isLogged_givenItemInLocalStorage_shouldReturnTrue', () => {
+  it('isLogged_givenItemInLocalStorage_shouldBeTruthy', () => {
     //Arrange
     spyOn(localStorage, 'getItem').and.callFake(() => { });
 
@@ -76,7 +76,7 @@ describe('AuthServiceTests', () => {
     expect(result).toBeTruthy();
   });
 
-  it('isLogged_givenNoItemInLocalStorage_shouldReturnFalse', () => {
+  it('isLogged_givenNoItemInLocalStorage_shouldBeFalsy', () => {
     //Arrange
     spyOn(localStorage, 'getItem').and.callFake(() => { return null; });
 
