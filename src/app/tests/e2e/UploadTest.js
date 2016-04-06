@@ -26,8 +26,7 @@ describe("Upload picture page", function() {
   });
 
   it("Upload picture page not available if user is not logged in ", function() {
-    UploadPage.navigateToUploadPage();
-    expect(UploadPage.getCurrentURL()).toEqual("http://localhost:3000/#/login");
+    expect(UploadPage.isNavigateToUploadPageVisible()).toBe(false);
     console.log("Upload picture page not available if user is not logged in");
   });
 
@@ -36,6 +35,7 @@ describe("Upload picture page", function() {
     UploadPage.navigateToUploadPage();
     expect(UploadPage.isChooseBtnEnabled()).toBe(true);
     console.log("Choose picture button should be enabled when user is navigated to Upload page");
+    LogInPage.logOut();
   });
 
   it("Upload button should be disabled if file is not selected", function() {
@@ -43,6 +43,7 @@ describe("Upload picture page", function() {
     UploadPage.navigateToUploadPage();
     expect(UploadPage.isUploadBtnEnabled()).toBe(false);
     console.log("Upload button should be disabled if file is not selected");
+    LogInPage.logOut();
   });
 
   it("Path field should be disabled when user is navigated to upload page", function() {
@@ -50,19 +51,7 @@ describe("Upload picture page", function() {
     UploadPage.navigateToUploadPage();
     expect(UploadPage.isPathFieldEnabled()).toBe(false);
     console.log("Path field should be disabled when user is navigated to upload page");
-  });
-
-
-  it("User can navigate from upload to log in page", function() {
-    UploadPage.navigateToLogInPage();
-    expect(UploadPage.getCurrentURL()).toEqual("http://localhost:3000/#/login");
-    console.log("User can navigate from upload to log in page");
-  });
-
-  it("User can navigate from upload to home page", function() {
-    UploadPage.navigateToHomePage();
-    expect(UploadPage.getCurrentURL()).toEqual("http://localhost:3000/#/home");
-    console.log("User can navigate from upload to home page");
+    LogInPage.logOut();
   });
 
 

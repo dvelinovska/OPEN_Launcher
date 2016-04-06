@@ -46,7 +46,7 @@ var CreateUserPage = function() {
     console.log("Kliknata slikicka");
   };
 
-  autoGenerateUserName = function() {
+  /*autoGenerateUserName = function() {
     autoGenerateUserName = "Auto-UserName-";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     for (var i = 0; i < 3; i++) {
@@ -74,7 +74,7 @@ var CreateUserPage = function() {
     autoGenerateUserName();
     createBtnSecondPage.click();
   };
-
+*/
   this.selectRadioButton = function(option) {
     var radioselect = radiobtn.get(option);
     radioselect.getAttribute("innerHTML").then(function(text) {
@@ -129,7 +129,6 @@ var CreateUserPage = function() {
     createBtnFirstPage.click();
   };
 
-
   this.writeName = function(name) {
     enterName.sendKeys(name);
   };
@@ -141,7 +140,6 @@ var CreateUserPage = function() {
   this.checkText = function() {
     return createdProfilMsg.getText();
   };
-
 
   this.clickBack = function() {
     backBtn.click();
@@ -158,7 +156,6 @@ var CreateUserPage = function() {
 
   this.filterUsername = function(filter) {
     enterName.sendKeys(filter);
-
   };
 
   this.clearFilter = function() {
@@ -186,7 +183,6 @@ var CreateUserPage = function() {
   };
 
   this.isRedPresent = function() {
-
     return colorRed.isPresent();
   };
 
