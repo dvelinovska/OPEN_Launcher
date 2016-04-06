@@ -35,15 +35,15 @@ var UploadPage = function() {
 
   this.navigateToUploadPage = function() {
     navigateToUpload.click();
-  }
+  };
+
+  this.isNavigateToUploadPageVisible = function() {
+    return navigateToUpload.isPresent();
+  };
 
   this.getCurrentURL = function() {
     return browser.getCurrentUrl();
   };
-
-  this.navigateToLogInPage = function() {
-    navigateHome.click();
-  }
 
   this.isUploadBtnEnabled = function() {
     return uploadBtn.isEnabled();
