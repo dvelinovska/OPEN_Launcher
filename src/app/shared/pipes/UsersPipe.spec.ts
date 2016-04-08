@@ -4,10 +4,10 @@ import {
   inject
 } from 'angular2/testing';
 
-import {UsersFilter} from './UsersFilter';
+import {UsersPipe} from './UsersPipe';
 import {User} from '../models/User';
 
-describe('UsersFilterTests', () => {
+describe('UsersPipeTests', () => {
   function getUser() {
     var user = new User();
     user.name = 'dragica';
@@ -15,11 +15,11 @@ describe('UsersFilterTests', () => {
   }
 
   beforeEachProviders(() => [
-    UsersFilter
+    UsersPipe
   ]);
 
-  it('transform_givenFilter_shouldFilterWithOneUser',
-    inject([UsersFilter], (instance) => {
+  it('transform_givenPipe_shouldReturnOneUser',
+    inject([UsersPipe], (instance) => {
       // Arrange
       let user = getUser();
 
@@ -30,8 +30,8 @@ describe('UsersFilterTests', () => {
       expect(result).toEqual([user]);
     }));
 
-  it('transform_givenNoFilter_shouldReturnAllUsers',
-    inject([UsersFilter], (instance) => {
+  it('transform_givenNoPipe_shouldReturnAllUsers',
+    inject([UsersPipe], (instance) => {
       // Arrange
       let user = getUser();
       let users: User[] = new Array<User>();
@@ -45,7 +45,7 @@ describe('UsersFilterTests', () => {
     }));
 
   it('transform_givenNoUsers_shouldReturnNoUsers',
-    inject([UsersFilter], (instance) => {
+    inject([UsersPipe], (instance) => {
       // Arrange
       let users: User[] = new Array<User>();
 
@@ -56,8 +56,8 @@ describe('UsersFilterTests', () => {
       expect(result).toEqual(users);
     }));
 
-  it('transform_givenFilter_shouldFilterWithMultipleUsers',
-    inject([UsersFilter], (instance) => {
+  it('transform_givenPipe_shouldReturnMultipleUsers',
+    inject([UsersPipe], (instance) => {
       // Arrange
       let user1 = new User();
       user1.name = 'Daniela';
