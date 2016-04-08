@@ -16,5 +16,5 @@ import {AuthService} from '../../shared/services/AuthService';
 )
 export class HomeComponent {
   public zapoznajSeSoKomp = 'Причина и последица';
-  public ucimeSoKomp = ['Множество/Парови', 'Кој се крие', 'Сложувалка', 'Јас и мојот дом', 'Приказна'];
+  public ucimeSoKomp = ['Парови', 'Кој се крие', 'Сложувалка', 'Јас и мојот дом', 'Приказна'];
 }
