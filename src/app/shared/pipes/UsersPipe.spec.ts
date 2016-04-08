@@ -8,9 +8,9 @@ import {UsersPipe} from './UsersPipe';
 import {User} from '../models/User';
 
 describe('UsersPipeTests', () => {
-  function getUser() {
+  function getUser(name: string): User {
     var user = new User();
-    user.name = 'dragica';
+    user.name = name;
     return user;
   }
 
@@ -18,10 +18,10 @@ describe('UsersPipeTests', () => {
     UsersPipe
   ]);
 
-  it('transform_givenPipe_shouldReturnOneUser',
+  it('transform_givenPipeArgument_shouldReturnOneUser',
     inject([UsersPipe], (instance) => {
       // Arrange
-      let user = getUser();
+      let user = getUser('Dragica');
 
       // Act
       var result = instance.transform([user], ['dr']);
@@ -30,12 +30,11 @@ describe('UsersPipeTests', () => {
       expect(result).toEqual([user]);
     }));
 
-  it('transform_givenNoPipe_shouldReturnAllUsers',
+  it('transform_givenNoPipeArgument_shouldReturnAllUsers',
     inject([UsersPipe], (instance) => {
       // Arrange
-      let user = getUser();
       let users: User[] = new Array<User>();
-      users[0] = user;
+      users[0] = getUser('Dragica');
 
       // Act
       var result = instance.transform(users, ['']);
@@ -56,16 +55,12 @@ describe('UsersPipeTests', () => {
       expect(result).toEqual(users);
     }));
 
-  it('transform_givenPipe_shouldReturnMultipleUsers',
+  it('transform_givenPipeArgument_shouldReturnMultipleUsers',
     inject([UsersPipe], (instance) => {
       // Arrange
-      let user1 = new User();
-      user1.name = 'Daniela';
-      let user2 = new User();
-      user2.name = 'Dragica';
       let users: User[] = new Array<User>();
-      users[0] = user1;
-      users[1] = user2;
+      users[0] = getUser('Dragica');
+      users[1] = getUser('Daniela');
 
       // Act
       var result = instance.transform(users, ['d']);
